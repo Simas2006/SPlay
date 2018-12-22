@@ -1,0 +1,14 @@
+{
+  "name": "splay-tv",
+  "version": "1.0.0",
+  "description": "SPlay app for TV",
+  "main": "main.js",
+  "scripts": {
+    "test": "electron ."
+  },
+  "author": "Simas Juknelis",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^4.0.0"
+  }
+}
