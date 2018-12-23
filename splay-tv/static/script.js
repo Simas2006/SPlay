@@ -2,6 +2,7 @@ var fs = require("fs");
 var DATA_FOLDER = __dirname + "/../data";
 
 var currentPage = "home";
+var queue = [];
 var pf = {
   "home": {load: Function.prototype},
   "mlibrary": {
@@ -19,6 +20,14 @@ var pf = {
       pf.mlibrary.path = pf.mlibrary.path.split("/").slice(0,-2).concat([""]).join("/");
       pf.mlibrary.renderLinks();
     },
+    "toggleSelect": function() {
+      if ( pf.mlibrary.selected.filter(item => ! item).length > 0 ) {
+        pf.mlibrary.selected = pf.mlibrary.selected.map(item => true);
+      } else {
+        pf.mlibrary.selected = pf.mlibrary.selected.map(item => false);
+      }
+      pf.mlibrary.renderLinks();
+    },
     "renderLinks": function() {
       fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
@@ -28,6 +37,8 @@ var pf = {
             if ( ! pf.mlibrary.selected ) pf.mlibrary.selected = list.map(item => false);
             document.getElementById("mlibrary-button1").style.display = "inline";
             document.getElementById("mlibrary-button2").style.display = "inline";
+            if ( pf.mlibrary.selected.filter(item => ! item).length > 0 ) document.getElementById("mlibrary-button1").innerText = "Select All";
+            else document.getElementById("mlibrary-button1").innerText = "Deselect All";
           } else {
             document.getElementById("mlibrary-button1").style.display = "none";
             document.getElementById("mlibrary-button2").style.display = "none";
@@ -43,7 +54,6 @@ var pf = {
             a["data-index"] = i;
             a.onclick = function() {
               var index = parseInt(this["data-index"]);
-              console.log(index);
               if ( isDir ) {
                 pf.mlibrary.path += list[index] + "/";
                 pf.mlibrary.selected = null;
