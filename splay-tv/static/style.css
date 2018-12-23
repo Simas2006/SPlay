@@ -3,7 +3,7 @@ body {
   text-align: center;
   font-size: 135%;
 }
-body *:not(hr) {
+body *:not(hr):not(table) {
   margin: 0;
 }
 h1 {
@@ -13,7 +13,7 @@ button {
   display: inline;
   font-size: 100%;
   font-family: "DIN Alternate";
-  padding: 7.5px;
+  padding: 13px;
 }
 a {
   display: block;
@@ -21,6 +21,16 @@ a {
   text-decoration: none;
   cursor: pointer;
   user-select: none;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+td button {
+  width: 60px;
+  height: 60px;
 }
 #page-home {
   text-align: center;

@@ -3,7 +3,8 @@ var DATA_FOLDER = __dirname + "/../data";
 
 var currentPage = "home";
 var queue = [];
-var pf = {
+var aa; // Audio Agent
+var pf = { // Page Functions
   "home": {load: Function.prototype},
   "mlibrary": {
     "path": "/",
@@ -77,6 +78,13 @@ var pf = {
     }
   }
 }
+
+class AudioAgent {
+  constructor() {
+
+  }
+}
+aa = new AudioAgent();
 
 function openPage(page) {
   document.getElementById(`page-${currentPage}`).style.display = "none";

@@ -20,8 +20,27 @@
     <button onclick="openPage('settings')">Settings</button>
     <br />
     <hr />
-    <p>Queue:</p>
+    <p>Now Playing:</p>
     <br />
+    <table>
+      <tr>
+        <td><button>&#x23ea;</button></td>
+        <td><button>||</button></td>
+        <td><button>&#x23e9;</button></td>
+      </tr>
+      <tr>
+        <td><button>V-</button></td>
+        <td><button>50%</button></td>
+        <td><button>V+</button></td>
+      </tr>
+      <tr>
+        <td><button>&#x1f500;</button></td>
+        <td></td>
+        <td><button>X</button></td>
+      </tr>
+    </table>
+    <br />
+    <p>Queue:</p>
     <div id="queue">Nothing!</div>
   </div>
   <div id="page-mlibrary" class="page">
@@ -31,5 +50,6 @@
     <button id="mlibrary-button1" onclick="pf.mlibrary.toggleSelect()">Select All</button>
     <button id="mlibrary-button2" onclick="pf.mlibrary.addToQueue()">Add to Queue</button>
   </div>
+  <audio id="audio"></audio>
 </body>
 </html>
