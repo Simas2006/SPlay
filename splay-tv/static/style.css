@@ -13,7 +13,7 @@ button {
   display: inline;
   font-size: 100%;
   font-family: "DIN Alternate";
-  padding: 13px;
+  padding: 10px;
   background-color: white;
 }
 a {
@@ -30,8 +30,8 @@ table {
   margin-bottom: 0;
 }
 td button {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
 }
 audio {
   display: none;

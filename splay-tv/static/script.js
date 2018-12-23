@@ -33,10 +33,9 @@ var pf = { // Page Functions
       fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
         list = list.filter((item,index) => pf.mlibrary.selected[index]).map(item => `${pf.mlibrary.path}${item}`);
-        var pnsFlag = queue.length <= 0;
         queue = queue.concat(list);
         openPage("home");
-        if ( pnsFlag ) aa.playNextSong();
+        if ( ! aa.songActive ) aa.playNextSong();
       });
     },
     "renderLinks": function() {
@@ -84,16 +83,60 @@ var pf = { // Page Functions
 class AudioAgent {
   constructor() {
     this.audio = document.getElementById("audio");
-    this.audio.onloadeddata = this.audio.play;
+    this.audio.onloadeddata = _ => {
+      this.audio.play();
+      this.togglePlay(true);
+    }
     this.audio.onended = _ => this.playNextSong();
+    this.playing = false;
+    this.volume = 50;
+    this.previousVolume = null;
+    this.songActive = false;
   }
   playNextSong() {
     if ( queue.length <= 0 ) {
       this.audio.src = "about:blank";
+      this.songActive = false;
+      this.audio.pause();
+      document.getElementById("home-pauseButton").innerText = "▶";
     } else {
       this.audio.src = encodeURIComponent(`${DATA_FOLDER}/music/${queue[0]}`).split("%2F").join("/");
       queue = queue.slice(1);
+      this.songActive = true;
     }
+  }
+  togglePlay(setPlaying) {
+    if ( ! this.songActive ) return;
+    if ( setPlaying && this.playing ) return;
+    this.playing = ! this.playing;
+    if ( this.playing ) {
+      this.audio.play();
+      document.getElementById("home-pauseButton").innerText = "||";
+    } else {
+      this.audio.pause();
+      document.getElementById("home-pauseButton").innerText = "▶";
+    }
+  }
+  rewindSong() {
+    this.audio.currentTime = 0;
+    this.togglePlay(true);
+  }
+  changeVolume(amount) {
+    if ( this.volume + amount < 0 || this.volume + amount > 100 ) return;
+    if ( amount != 0 ) {
+      this.volume += amount;
+      this.previousVolume = null;
+    } else {
+      if ( ! this.previousVolume ) {
+        this.previousVolume = this.volume;
+        this.volume = 0;
+      } else {
+        this.volume = this.previousVolume;
+        this.previousVolume = null;
+      }
+    }
+    this.audio.volume = this.volume / 100;
+    document.getElementById("home-volumeButton").innerText = `${this.volume}%`;
   }
 }
 
