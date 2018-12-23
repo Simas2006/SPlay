@@ -24,19 +24,19 @@
     <br />
     <table>
       <tr>
-        <td><button>&#x23ea;</button></td>
-        <td><button>||</button></td>
-        <td><button>&#x23e9;</button></td>
+        <td><button onclick="aa.rewindSong()">&#x23ea;</button></td>
+        <td><button onclick="aa.togglePlay()">||</button></td>
+        <td><button onclick="aa.playNextSong()">&#x23e9;</button></td>
       </tr>
       <tr>
-        <td><button>V-</button></td>
-        <td><button>50%</button></td>
-        <td><button>V+</button></td>
+        <td><button onclick="aa.changeVolume(-5)">V-</button></td>
+        <td><button onclick="aa.changeVolume(0)">50%</button></td>
+        <td><button onclick="aa.changeVolume(5)">V+</button></td>
       </tr>
       <tr>
-        <td><button>&#x1f500;</button></td>
+        <td><button onclick="aa.shuffleQueue()">&#x1f500;</button></td>
         <td></td>
-        <td><button>X</button></td>
+        <td><button onclick="aa.clearQueue()">X</button></td>
       </tr>
     </table>
     <br />

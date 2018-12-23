@@ -33,8 +33,10 @@ var pf = { // Page Functions
       fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
         list = list.filter((item,index) => pf.mlibrary.selected[index]).map(item => `${pf.mlibrary.path}${item}`);
+        var pnsFlag = queue.length <= 0;
         queue = queue.concat(list);
         openPage("home");
+        if ( pnsFlag ) aa.playNextSong();
       });
     },
     "renderLinks": function() {
@@ -81,10 +83,19 @@ var pf = { // Page Functions
 
 class AudioAgent {
   constructor() {
-
+    this.audio = document.getElementById("audio");
+    this.audio.onloadeddata = this.audio.play;
+    this.audio.onended = _ => this.playNextSong();
+  }
+  playNextSong() {
+    if ( queue.length <= 0 ) {
+      this.audio.src = "about:blank";
+    } else {
+      this.audio.src = encodeURIComponent(`${DATA_FOLDER}/music/${queue[0]}`).split("%2F").join("/");
+      queue = queue.slice(1);
+    }
   }
 }
-aa = new AudioAgent();
 
 function openPage(page) {
   document.getElementById(`page-${currentPage}`).style.display = "none";
@@ -94,5 +105,6 @@ function openPage(page) {
 }
 
 window.onload = function() {
+  aa = new AudioAgent();
   openPage("home");
 }
