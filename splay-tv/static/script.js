@@ -1,0 +1,62 @@
+var fs = require("fs");
+var DATA_FOLDER = __dirname + "/../data";
+
+var currentPage = "home";
+var pf = {
+  "home": {load: Function.prototype},
+  "mlibrary": {
+    "path": "/",
+    "selected": null,
+    "load": function() {
+      pf.mlibrary.path = "/";
+      pf.mlibrary.renderLinks();
+    },
+    "back": function() {
+      if ( pf.mlibrary.path == "/" ) {
+        openPage("home");
+        return;
+      }
+      pf.mlibrary.path = pf.mlibrary.path.split("/").slice(0,-2).concat([""]).join("/");
+      pf.mlibrary.renderLinks();
+    },
+    "renderLinks": function() {
+      fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
+        if ( err ) throw err;
+        fs.stat(`${DATA_FOLDER}/music/${pf.mlibrary.path}/${list[0]}`,function(err,stats) {
+          if ( ! stats.isDirectory() ) pf.mlibrary.selected = list.map(item => false);
+          var div = document.getElementById("mlibrary-items");
+          while ( div.firstChild ) {
+            div.removeChild(div.firstChild);
+          }
+          for ( var i = 0; i < list.length; i++ ) {
+            var a = document.createElement("a");
+            a.innerText = list[i];
+            a["data-index"] = i;
+            a.onclick = function() {
+              var index = parseInt(this["data-index"]);
+              if ( stats.isDirectory() ) {
+                pf.mlibrary.path += list[index] + "/";
+                pf.mlibrary.renderLinks();
+              } else {
+                pf.mlibrary.selected[index] = ! pf.mlibrary.selected[index];
+                this.style.color = pf.mlibrary.selected[index] ? "#00aa00" : "blue";
+              }
+            }
+            div.appendChild(a);
+          }
+        });
+      });
+    }
+  }
+}
+
+function openPage(page) {
+  document.getElementById(`page-${currentPage}`).style.display = "none";
+  document.getElementById(`page-${page}`).style.display = "block";
+  currentPage = page;
+  pf[page].load();
+}
+
+window.onload = function() {
+  openPage("home");
+}

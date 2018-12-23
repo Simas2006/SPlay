@@ -7,10 +7,9 @@
   <script src="script.js"></script>
 </head>
 <body>
-  <div id="home">
-    <h1>SPlay</h1>
-    <hr />
-    <br />
+  <h1>SPlay</h1>
+  <hr />
+  <div id="page-home" class="page">
     <button onclick="openPage('mlibrary')">Music Library</button>
     <button onclick="openPage('youtube')">YouTube</button>
     <button onclick="openPage('playlists')">Playlists</button>
@@ -20,11 +19,15 @@
     <button onclick="openPage('web')">Web Browser</button>
     <button onclick="openPage('settings')">Settings</button>
     <br />
-    <br />
     <hr />
     <p>Queue:</p>
     <br />
-    <div id="queue"></div>
+    <div id="queue">Nothing!</div>
+  </div>
+  <div id="page-mlibrary" class="page">
+    <div id="mlibrary-items"></div>
+    <br />
+    <button onclick="pf.mlibrary.back()">Back</button>
   </div>
 </body>
 </html>
