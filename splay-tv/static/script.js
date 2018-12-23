@@ -28,6 +28,14 @@ var pf = {
       }
       pf.mlibrary.renderLinks();
     },
+    "addToQueue": function() {
+      fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
+        if ( err ) throw err;
+        list = list.filter((item,index) => pf.mlibrary.selected[index]).map(item => `${pf.mlibrary.path}${item}`);
+        queue = queue.concat(list);
+        openPage("home");
+      });
+    },
     "renderLinks": function() {
       fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
