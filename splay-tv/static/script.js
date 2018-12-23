@@ -98,6 +98,7 @@ class AudioAgent {
       this.audio.src = "about:blank";
       this.songActive = false;
       this.audio.pause();
+      this.playing = false;
       document.getElementById("home-pauseButton").innerText = "▶";
     } else {
       this.audio.src = encodeURIComponent(`${DATA_FOLDER}/music/${queue[0]}`).split("%2F").join("/");
@@ -137,6 +138,18 @@ class AudioAgent {
     }
     this.audio.volume = this.volume / 100;
     document.getElementById("home-volumeButton").innerText = `${this.volume}%`;
+  }
+  shuffleQueue() {
+    for ( var i = queue.length - 1; i > 0; i-- ) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = queue[i];
+      queue[i] = queue[j];
+      queue[j] = temp;
+    }
+  }
+  clearQueue() {
+    queue = [];
+    this.playNextSong();
   }
 }
 
