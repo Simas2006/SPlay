@@ -23,7 +23,15 @@ var pf = {
       fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
         fs.stat(`${DATA_FOLDER}/music/${pf.mlibrary.path}/${list[0]}`,function(err,stats) {
-          if ( ! stats.isDirectory() ) pf.mlibrary.selected = list.map(item => false);
+          var isDir = stats.isDirectory();
+          if ( ! isDir ) {
+            if ( ! pf.mlibrary.selected ) pf.mlibrary.selected = list.map(item => false);
+            document.getElementById("mlibrary-button1").style.display = "inline";
+            document.getElementById("mlibrary-button2").style.display = "inline";
+          } else {
+            document.getElementById("mlibrary-button1").style.display = "none";
+            document.getElementById("mlibrary-button2").style.display = "none";
+          }
           var div = document.getElementById("mlibrary-items");
           while ( div.firstChild ) {
             div.removeChild(div.firstChild);
@@ -31,16 +39,18 @@ var pf = {
           for ( var i = 0; i < list.length; i++ ) {
             var a = document.createElement("a");
             a.innerText = list[i];
+            if ( ! isDir ) a.style.color = pf.mlibrary.selected[i] ? "#00aa00" : "blue";
             a["data-index"] = i;
             a.onclick = function() {
               var index = parseInt(this["data-index"]);
-              if ( stats.isDirectory() ) {
+              console.log(index);
+              if ( isDir ) {
                 pf.mlibrary.path += list[index] + "/";
-                pf.mlibrary.renderLinks();
+                pf.mlibrary.selected = null;
               } else {
                 pf.mlibrary.selected[index] = ! pf.mlibrary.selected[index];
-                this.style.color = pf.mlibrary.selected[index] ? "#00aa00" : "blue";
               }
+              pf.mlibrary.renderLinks();
             }
             div.appendChild(a);
           }

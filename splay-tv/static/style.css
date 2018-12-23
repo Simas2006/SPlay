@@ -25,6 +25,9 @@ a {
 #page-home {
   text-align: center;
 }
+#mlibrary-button1,#mlibrary-button2 {
+  display: none;
+}
 .page {
   display: none;
   text-align: left;
