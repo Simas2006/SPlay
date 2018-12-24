@@ -5,7 +5,9 @@ var currentPage = "home";
 var queue = [];
 var aa; // Audio Agent
 var pf = { // Page Functions
-  "home": {"load": Function.prototype},
+  "home": {
+    "load": Function.prototype
+  },
   "mlibrary": {
     "path": "/",
     "selected": null,
@@ -39,7 +41,7 @@ var pf = { // Page Functions
           }});
         queue = queue.concat(list);
         openPage("home");
-        if ( ! aa.songActive ) aa.playNextSong();
+        if ( ! aa.currentSong ) aa.playNextSong();
       });
     },
     "renderLinks": function() {
@@ -117,7 +119,7 @@ var pf = { // Page Functions
       clearInterval(pf.ytselect.interval);
       document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
       openPage("home");
-      if ( ! aa.songActive ) aa.playNextSong();
+      if ( ! aa.currentSong ) aa.playNextSong();
     },
     "exitPage": function() {
       clearInterval(pf.ytselect.interval);
@@ -139,8 +141,8 @@ class AudioAgent {
     this.playing = false;
     this.volume = 50;
     this.previousVolume = null;
-    this.songActive = false;
     this.songType = null;
+    this.currentSong = null;
   }
   playNextSong() {
     if ( this.songType == "library" ) this.audio.pause();
@@ -148,13 +150,13 @@ class AudioAgent {
     if ( queue.length <= 0 ) {
       this.audio.src = "about:blank";
       this.songType = null;
-      this.songActive = false;
+      this.currentSong = null;
       this.playing = false;
       this.audio.pause();
       document.getElementById("home-pauseButton").innerText = "▶";
     } else {
       this.songType = queue[0].type;
-      this.songActive = true;
+      this.currentSong = queue[0];
       if ( queue[0].type == "library" ) {
         this.audio.src = encodeURIComponent(`${DATA_FOLDER}/music/${queue[0].path}`).split("%2F").join("/");
       } else if ( queue[0].type == "youtube" ) {
@@ -172,7 +174,7 @@ class AudioAgent {
     }
   }
   togglePlay(setPlaying) {
-    if ( ! this.songActive ) return;
+    if ( ! this.currentSong ) return;
     if ( setPlaying && this.playing ) return;
     this.playing = ! this.playing;
     if ( this.playing ) {
