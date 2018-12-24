@@ -5,7 +5,7 @@ var currentPage = "home";
 var queue = [];
 var aa; // Audio Agent
 var pf = { // Page Functions
-  "home": {load: Function.prototype},
+  "home": {"load": Function.prototype},
   "mlibrary": {
     "path": "/",
     "selected": null,
@@ -81,6 +81,44 @@ var pf = { // Page Functions
         });
       });
     }
+  },
+  "ytselect": {
+    "webObj": null,
+    "interval": null,
+    "load": function() {
+      pf.ytselect.webObj = document.createElement("webview");
+      pf.ytselect.webObj.src = "https://www.youtube.com";
+      pf.ytselect.webObj.className = "ytselect";
+      document.getElementById("page-ytselect").appendChild(pf.ytselect.webObj);
+      var currentState = false;
+      pf.ytselect.interval = setInterval(function() {
+        if ( pf.ytselect.webObj.getURL().startsWith("https://www.youtube.com/watch?v=") ) {
+          if ( ! currentState ) {
+            document.getElementById("ytselect-queueButton").disabled = "";
+            document.getElementById("ytselect-queueButton").style.color = "black";
+            currentState = true;
+          }
+        } else {
+          if ( currentState ) {
+            document.getElementById("ytselect-queueButton").disabled = "disabled";
+            document.getElementById("ytselect-queueButton").style.color = "gray";
+            currentState = false;
+          }
+        }
+      },250);
+    },
+    "addToQueue": function() {
+      var string = pf.ytselect.webObj.getURL().split("https://www.youtube.com/watch?v=").join("");
+      string = string.slice(0,11);
+      queue.push({
+        "type": "youtube",
+        "path": string
+      });
+      clearInterval(pf.ytselect.interval);
+      document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
+      openPage("home");
+      if ( ! aa.songActive ) aa.playNextSong();
+    }
   }
 }
 
@@ -100,7 +138,8 @@ class AudioAgent {
     this.songType = null;
   }
   playNextSong() {
-    if ( this.songType == "youtube" ) ytPlayer.parentElement.removeChild(ytPlayer);
+    if ( this.songType == "library" ) this.audio.pause();
+    else if ( this.songType == "youtube" ) ytPlayer.parentElement.removeChild(ytPlayer);
     if ( queue.length <= 0 ) {
       this.audio.src = "about:blank";
       this.songType = null;
@@ -116,7 +155,8 @@ class AudioAgent {
       } else if ( queue[0].type == "youtube" ) {
         ytPlayer = document.createElement("webview");
         ytPlayer.preload = "../yt-injection.js";
-        ytPlayer.src = queue[0].path;
+        ytPlayer.src = `https://www.youtube.com/watch?v=${queue[0].path}`;
+        ytPlayer.className = "hidden";
         ytPlayer.addEventListener("ipc-message",event => {
           if ( event.channel == "video-end" ) this.playNextSong();
         });
@@ -179,7 +219,7 @@ class AudioAgent {
 
 function openPage(page) {
   document.getElementById(`page-${currentPage}`).style.display = "none";
-  document.getElementById(`page-${page}`).style.display = "block";
+  document.getElementById(`page-${page}`).style.display = page != "ytselect" ? "block" : "flex";
   currentPage = page;
   pf[page].load();
 }
