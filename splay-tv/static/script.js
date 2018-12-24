@@ -118,6 +118,11 @@ var pf = { // Page Functions
       document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
       openPage("home");
       if ( ! aa.songActive ) aa.playNextSong();
+    },
+    "exitPage": function() {
+      clearInterval(pf.ytselect.interval);
+      document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
+      openPage("home");
     }
   }
 }

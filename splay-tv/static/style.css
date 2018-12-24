@@ -23,12 +23,6 @@ a {
   cursor: pointer;
   user-select: none;
 }
-table {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0;
-  margin-bottom: 0;
-}
 td button {
   width: 65px;
   height: 65px;
@@ -39,12 +33,24 @@ audio {
 #page-home {
   text-align: center;
 }
+#page-home table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 #mlibrary-button1,#mlibrary-button2 {
   display: none;
 }
 #page-ytselect {
   flex-flow: column;
   height: 100vh;
+}
+#page-ytselect td {
+  width: 50%;
+}
+#page-ytselect table,#page-ytselect button {
+  width: 100%;
 }
 #ytselect-queueButton {
   color: gray;

@@ -51,7 +51,10 @@
     <button id="mlibrary-button2" onclick="pf.mlibrary.addToQueue()">Add to Queue</button>
   </div>
   <div id="page-ytselect" class="page">
-    <button id="ytselect-queueButton" onclick="pf.ytselect.addToQueue()" disabled="disabled">Add to Queue</button>
+    <table><tr>
+      <td><button onclick="pf.ytselect.exitPage()">Back</button></td>
+      <td><button id="ytselect-queueButton" onclick="pf.ytselect.addToQueue()" disabled="disabled">Add to Queue</button></td>
+    </tr></table>
   </div>
   <audio id="audio"></audio>
   <div id="ytPlayer-box"></webview>
