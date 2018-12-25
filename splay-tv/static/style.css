@@ -1,17 +1,18 @@
 body {
+  --fsize-100: 100%;
   font-family: "DIN Alternate";
   text-align: center;
-  font-size: 135%;
+  font-size: calc(var(--fsize-100) * 1.35);
 }
 body *:not(hr):not(table) {
   margin: 0;
 }
 h1 {
-  font-size: 200%;
+  font-size: calc(var(--fsize-100) * 2);
 }
 button {
   display: inline;
-  font-size: 100%;
+  font-size: var(--fsize-100);
   font-family: "DIN Alternate";
   padding: 10px;
   background-color: white;
@@ -23,21 +24,22 @@ a {
   cursor: pointer;
   user-select: none;
 }
-td button {
-  width: 65px;
-  height: 65px;
-}
 audio {
   display: none;
 }
 #page-home {
   text-align: center;
 }
-#page-home table {
+#home-buttonPanel {
   margin-left: auto;
   margin-right: auto;
   margin-top: 0;
   margin-bottom: 0;
+}
+#home-buttonPanel td button {
+  width: 5ch;
+  height: 5ch;
+  padding: 0;
 }
 #mlibrary-button1,#mlibrary-button2 {
   display: none;
@@ -55,6 +57,11 @@ audio {
 #ytselect-queueButton {
   color: gray;
 }
+#home-nowPlaying {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 webview.ytselect {
   flex-grow: 1;
 }
@@ -65,4 +72,34 @@ webview.hidden {
 .page {
   display: none;
   text-align: left;
+}
+.queueElement {
+  background-color: #a8a8a8;
+  border: 1px solid black;
+}
+.queueElement button {
+  display: block;
+  font-size: calc(var(--fsize-100) * 0.75);
+  padding: 2.5px;
+  width: 4ch;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+.queueElement td.typeData {
+  font-size: calc(var(--fsize-100) * 2.75);
+  width: 5vw;
+  border-radius: 15%;
+  background-color: white;
+}
+.queueElement td.songData {
+  width: 35vw;
+  text-align: left;
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+}
+.queueElement p.songTitleText {
+  font-size: calc(var(--fsize-100) * 1.25);
+}
+.queueElement p:not(.songTitleText) {
+  font-size: calc(var(--fsize-100) * 0.75);
 }

@@ -6,7 +6,52 @@ var queue = [];
 var aa; // Audio Agent
 var pf = { // Page Functions
   "home": {
-    "load": Function.prototype
+    "load": _ => pf.home.renderQueue(),
+    "renderQueue": function() {
+      document.getElementById("home-nowPlaying").appendChild(pf.home.generateQueueElement("library","Song","Album (Subalbum)","Playlist"));
+    },
+    "generateQueueElement": function(type,title,subtitle,playlist) {
+      var table = document.createElement("table");
+      table.className = "queueElement";
+      var row = document.createElement("tr");
+      var col1 = document.createElement("td");
+      col1.className = "typeData";
+      var icon = document.createElement("p");
+      icon.innerText = "♫";
+      col1.appendChild(icon);
+      row.appendChild(col1);
+      var col2 = document.createElement("td");
+      col2.className = "songData";
+      var titleObj = document.createElement("p");
+      titleObj.innerText = title;
+      titleObj.className = "songTitleText";
+      col2.appendChild(titleObj);
+      var subtitleObj = document.createElement("p");
+      subtitleObj.innerText = subtitle;
+      col2.appendChild(subtitleObj);
+      var playlistObj = document.createElement("p");
+      playlistObj.innerText = playlist;
+      col2.appendChild(playlistObj);
+      row.appendChild(col2);
+      var col3 = document.createElement("td");
+      var button1 = document.createElement("button");
+      button1.innerText = "⇡";
+      col3.appendChild(button1);
+      var button2 = document.createElement("button");
+      button2.innerText = "↑";
+      col3.appendChild(button2);
+      row.appendChild(col3);
+      var col4 = document.createElement("td");
+      var button3 = document.createElement("button");
+      button3.innerText = "X";
+      col4.appendChild(button3);
+      var button4 = document.createElement("button");
+      button4.innerText = "↓";
+      col4.appendChild(button4);
+      row.appendChild(col4);
+      table.appendChild(row);
+      return table;
+    }
   },
   "mlibrary": {
     "path": "/",
