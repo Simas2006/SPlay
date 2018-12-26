@@ -6,9 +6,11 @@ var queue = [];
 var aa; // Audio Agent
 var pf = { // Page Functions
   "home": {
-    "load": _ => pf.home.renderQueue(),
+    "load": Function.prototype,
     "renderQueue": function() {
       var nowPlayingBox = document.getElementById("home-nowPlaying");
+      var arr = pf.home.convertData(aa.currentSong,"Nothing Playing");
+      nowPlayingBox.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
     },
     "generateQueueElement": function(type,title,subtitle,playlist) {
       var table = document.createElement("table");
@@ -51,6 +53,32 @@ var pf = { // Page Functions
       row.appendChild(col4);
       table.appendChild(row);
       return table;
+    },
+    "convertData": function(obj,nothingText) {
+      if ( ! obj ) {
+        return [
+          "nothing",
+          "",
+          nothingText,
+          ""
+        ];
+      } else if ( obj.type == "library" ) {
+        var path = obj.path.split("/");
+        var songName = path[path.length - 1];
+        for ( var i = 0; i < songName.length; i++ ) {
+          if ( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(songName.charAt(i)) > -1 ) break;
+        }
+        songName = songName.slice(i).split(".").slice(0,-1).join(".");
+        var subtitle;
+        if ( path.length == 3 ) subtitle = path[1];
+        else subtitle = `${path[path.length - 2]} (${path[path.length - 3]})`;
+        return [
+          "library",
+          songName,
+          subtitle,
+          obj.playlist || ""
+        ];
+      }
     }
   },
   "mlibrary": {
@@ -219,6 +247,7 @@ class AudioAgent {
       }
       queue = queue.slice(1);
     }
+    pf.home.renderQueue();
   }
   togglePlay(setPlaying) {
     if ( ! this.currentSong ) return;
