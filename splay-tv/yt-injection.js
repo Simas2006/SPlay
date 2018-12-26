@@ -8,6 +8,9 @@ window.onload = function() {
       clearInterval(interval);
     }
   },1000);
+  setTimeout(function() {
+    ipcRenderer.sendToHost("video-ready");
+  },250);
   ipcRenderer.on("video-command",function(obj,command,param) {
     if ( command == "play" ) player.playVideo();
     else if ( command == "pause" ) player.pauseVideo();

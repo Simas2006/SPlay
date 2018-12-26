@@ -8,7 +8,7 @@ var pf = { // Page Functions
   "home": {
     "load": _ => pf.home.renderQueue(),
     "renderQueue": function() {
-      document.getElementById("home-nowPlaying").appendChild(pf.home.generateQueueElement("library","Song","Album (Subalbum)","Playlist"));
+      var nowPlayingBox = document.getElementById("home-nowPlaying");
     },
     "generateQueueElement": function(type,title,subtitle,playlist) {
       var table = document.createElement("table");
@@ -204,13 +204,15 @@ class AudioAgent {
       this.currentSong = queue[0];
       if ( queue[0].type == "library" ) {
         this.audio.src = encodeURIComponent(`${DATA_FOLDER}/music/${queue[0].path}`).split("%2F").join("/");
+        this.audio.volume = this.volume / 100;
       } else if ( queue[0].type == "youtube" ) {
         ytPlayer = document.createElement("webview");
         ytPlayer.preload = "../yt-injection.js";
         ytPlayer.src = `https://www.youtube.com/watch?v=${queue[0].path}`;
         ytPlayer.className = "hidden";
         ytPlayer.addEventListener("ipc-message",event => {
-          if ( event.channel == "video-end" ) this.playNextSong();
+          if ( event.channel == "video-ready" ) ytPlayer.send("video-command","setvol",this.volume);
+          else if ( event.channel == "video-end" ) this.playNextSong();
         });
         document.getElementById("ytPlayer-box").appendChild(ytPlayer);
         this.togglePlay(true);
