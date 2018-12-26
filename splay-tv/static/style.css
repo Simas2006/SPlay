@@ -57,8 +57,7 @@ audio {
 #ytselect-queueButton {
   color: gray;
 }
-#home-nowPlaying {
-  display: flex;
+#home-nowPlaying,#home-queue {
   justify-content: center;
   align-items: center;
 }
@@ -74,8 +73,10 @@ webview.hidden {
   text-align: left;
 }
 .queueElement {
+  display: table;
   background-color: #a8a8a8;
   border: 1px solid black;
+  margin: 0 auto;
 }
 .queueElement button {
   display: block;

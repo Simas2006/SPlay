@@ -8,9 +8,24 @@ var pf = { // Page Functions
   "home": {
     "load": Function.prototype,
     "renderQueue": function() {
-      var nowPlayingBox = document.getElementById("home-nowPlaying");
+      var nowPlayingDiv = document.getElementById("home-nowPlaying");
+      while ( nowPlayingDiv.firstChild ) {
+        nowPlayingDiv.removeChild(nowPlayingDiv.firstChild);
+      }
       var arr = pf.home.convertData(aa.currentSong,"Nothing Playing");
-      nowPlayingBox.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
+      nowPlayingDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
+      var queueDiv = document.getElementById("home-queue");
+      while ( queueDiv.firstChild ) {
+        queueDiv.removeChild(queueDiv.firstChild);
+      }
+      for ( var i = 0; i < queue.length; i++ ) {
+        var arr = pf.home.convertData(queue[i],null);
+        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
+      }
+      if ( queue.length <= 0 ) {
+        var arr = pf.home.convertData(null,"No Songs in Queue");
+        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
+      }
     },
     "generateQueueElement": function(type,title,subtitle,playlist) {
       var table = document.createElement("table");
@@ -19,7 +34,7 @@ var pf = { // Page Functions
       var col1 = document.createElement("td");
       col1.className = "typeData";
       var icon = document.createElement("p");
-      icon.innerText = "♫";
+      icon.innerText = ["♫"," "][["library","nothing"].indexOf(type)];
       col1.appendChild(icon);
       row.appendChild(col1);
       var col2 = document.createElement("td");
@@ -58,8 +73,8 @@ var pf = { // Page Functions
       if ( ! obj ) {
         return [
           "nothing",
-          "",
           nothingText,
+          "",
           ""
         ];
       } else if ( obj.type == "library" ) {
@@ -293,6 +308,7 @@ class AudioAgent {
       queue[i] = queue[j];
       queue[j] = temp;
     }
+    pf.home.renderQueue();
   }
   clearQueue() {
     queue = [];
@@ -310,4 +326,5 @@ function openPage(page) {
 window.onload = function() {
   aa = new AudioAgent();
   openPage("home");
+  pf.home.renderQueue();
 }
