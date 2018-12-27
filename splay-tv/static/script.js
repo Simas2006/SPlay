@@ -177,6 +177,7 @@ var pf = { // Page Functions
     "interval": null,
     "load": function() {
       pf.ytselect.webObj = document.createElement("webview");
+      pf.ytselect.webObj.preload = "../yt-select-injection.js";
       pf.ytselect.webObj.src = "https://www.youtube.com";
       pf.ytselect.webObj.className = "ytselect";
       document.getElementById("page-ytselect").appendChild(pf.ytselect.webObj);
@@ -200,14 +201,21 @@ var pf = { // Page Functions
     "addToQueue": function() {
       var string = pf.ytselect.webObj.getURL().split("https://www.youtube.com/watch?v=").join("");
       string = string.slice(0,11);
-      queue.push({
-        "type": "youtube",
-        "path": string
+      pf.ytselect.webObj.addEventListener("ipc-message",event => {
+        if ( event.channel == "video-data" ) {
+          var data = event.args[0];
+          queue.push({
+            "type": "youtube",
+            "path": string,
+            "ytMetadata": data
+          });
+          clearInterval(pf.ytselect.interval);
+          document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
+          openPage("home");
+          if ( ! aa.currentSong ) aa.playNextSong();
+        }
       });
-      clearInterval(pf.ytselect.interval);
-      document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
-      openPage("home");
-      if ( ! aa.currentSong ) aa.playNextSong();
+      pf.ytselect.webObj.send("video-data-req");
     },
     "exitPage": function() {
       clearInterval(pf.ytselect.interval);
@@ -250,7 +258,7 @@ class AudioAgent {
         this.audio.volume = this.volume / 100;
       } else if ( queue[0].type == "youtube" ) {
         ytPlayer = document.createElement("webview");
-        ytPlayer.preload = "../yt-injection.js";
+        ytPlayer.preload = "../yt-watch-injection.js";
         ytPlayer.src = `https://www.youtube.com/watch?v=${queue[0].path}`;
         ytPlayer.className = "hidden";
         ytPlayer.addEventListener("ipc-message",event => {
