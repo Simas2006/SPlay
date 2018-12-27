@@ -104,3 +104,8 @@ webview.hidden {
 .queueElement p:not(.songTitleText) {
   font-size: calc(var(--fsize-100) * 0.75);
 }
+.queueElement button.hidden {
+  background-color: #a8a8a8;
+  color: #a8a8a8;
+  border: 2px solid #a8a8a8;
+}

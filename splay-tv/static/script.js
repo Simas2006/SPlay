@@ -13,28 +13,28 @@ var pf = { // Page Functions
         nowPlayingDiv.removeChild(nowPlayingDiv.firstChild);
       }
       var arr = pf.home.convertData(aa.currentSong,"Nothing Playing");
-      nowPlayingDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
+      nowPlayingDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],false));
       var queueDiv = document.getElementById("home-queue");
       while ( queueDiv.firstChild ) {
         queueDiv.removeChild(queueDiv.firstChild);
       }
       for ( var i = 0; i < queue.length; i++ ) {
         var arr = pf.home.convertData(queue[i],null);
-        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
+        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],true));
       }
       if ( queue.length <= 0 ) {
         var arr = pf.home.convertData(null,"No Songs in Queue");
-        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3]));
+        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],false));
       }
     },
-    "generateQueueElement": function(type,title,subtitle,playlist) {
+    "generateQueueElement": function(type,title,subtitle,playlist,showButtons) {
       var table = document.createElement("table");
       table.className = "queueElement";
       var row = document.createElement("tr");
       var col1 = document.createElement("td");
       col1.className = "typeData";
       var icon = document.createElement("p");
-      icon.innerText = ["♫"," "][["library","nothing"].indexOf(type)];
+      icon.innerText = ["♫","▶"," "][["library","youtube","nothing"].indexOf(type)];
       col1.appendChild(icon);
       row.appendChild(col1);
       var col2 = document.createElement("td");
@@ -67,6 +67,13 @@ var pf = { // Page Functions
       col4.appendChild(button4);
       row.appendChild(col4);
       table.appendChild(row);
+      if ( ! showButtons ) {
+        var arr = [button1,button2,button3,button4];
+        for ( var i = 0; i < arr.length; i++ ) {
+          arr[i].className = "hidden";
+          arr[i].disabled = "disabled";
+        }
+      }
       return table;
     },
     "convertData": function(obj,nothingText) {
