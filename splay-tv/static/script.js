@@ -93,6 +93,13 @@ var pf = { // Page Functions
           subtitle,
           obj.playlist || ""
         ];
+      } else if ( obj.type == "youtube" ) {
+        return [
+          "youtube",
+          obj.ytMetadata.title,
+          obj.ytMetadata.author,
+          obj.playlist || ""
+        ];
       }
     }
   },
