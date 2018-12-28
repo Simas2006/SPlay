@@ -144,6 +144,7 @@ var pf = { // Page Functions
         queue = queue.concat(list);
         openPage("home");
         if ( ! aa.currentSong ) aa.playNextSong();
+        else pf.home.renderQueue();
       });
     },
     "renderLinks": function() {
@@ -196,6 +197,8 @@ var pf = { // Page Functions
       pf.ytselect.webObj.className = "ytselect";
       document.getElementById("page-ytselect").appendChild(pf.ytselect.webObj);
       var currentState = false;
+      document.getElementById("ytselect-queueButton").disabled = "disabled";
+      document.getElementById("ytselect-queueButton").style.color = "gray";
       pf.ytselect.interval = setInterval(function() {
         if ( pf.ytselect.webObj.getURL().startsWith("https://www.youtube.com/watch?v=") ) {
           if ( ! currentState ) {
@@ -227,6 +230,7 @@ var pf = { // Page Functions
           document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
           openPage("home");
           if ( ! aa.currentSong ) aa.playNextSong();
+          else pf.home.renderQueue();
         }
       });
       pf.ytselect.webObj.send("video-data-req");
