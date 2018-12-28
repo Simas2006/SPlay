@@ -20,14 +20,14 @@ var pf = { // Page Functions
       }
       for ( var i = 0; i < queue.length; i++ ) {
         var arr = pf.home.convertData(queue[i],null);
-        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],true));
+        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],true,i));
       }
       if ( queue.length <= 0 ) {
         var arr = pf.home.convertData(null,"No Songs in Queue");
         queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],false));
       }
     },
-    "generateQueueElement": function(type,title,subtitle,playlist,showButtons) {
+    "generateQueueElement": function(type,title,subtitle,playlist,showButtons,queueID) {
       var table = document.createElement("table");
       table.className = "queueElement";
       var row = document.createElement("tr");
@@ -53,17 +53,51 @@ var pf = { // Page Functions
       var col3 = document.createElement("td");
       var button1 = document.createElement("button");
       button1.innerText = "⇡";
+      if ( showButtons ) {
+        button1.id = "bU:" + queueID;
+        button1.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          queue.splice(0,0,queue.splice(index,1)[0]);
+          pf.home.renderQueue();
+        }
+      }
       col3.appendChild(button1);
       var button2 = document.createElement("button");
-      button2.innerText = "↑";
+      button2.innerText = "X";
+      if ( showButtons ) {
+        button2.id = "bD:" + queueID;
+        button2.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          queue.splice(index,1);
+          pf.home.renderQueue();
+        }
+      }
       col3.appendChild(button2);
       row.appendChild(col3);
       var col4 = document.createElement("td");
       var button3 = document.createElement("button");
-      button3.innerText = "X";
+      button3.innerText = "↑";
+      if ( showButtons ) {
+        button3.id = "bu:" + queueID;
+        button3.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          if ( index <= 0 ) return;
+          queue.splice(index - 1,0,queue.splice(index,1)[0]);
+          pf.home.renderQueue();
+        }
+      }
       col4.appendChild(button3);
       var button4 = document.createElement("button");
       button4.innerText = "↓";
+      if ( showButtons ) {
+        button4.id = "bd:" + queueID;
+        button4.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          if ( index + 1 >= queue.length ) return;
+          queue.splice(index + 1,0,queue.splice(index,1)[0]);
+          pf.home.renderQueue();
+        }
+      }
       col4.appendChild(button4);
       row.appendChild(col4);
       table.appendChild(row);
