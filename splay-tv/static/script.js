@@ -179,6 +179,7 @@ var pf = { // Page Functions
         openPage("home");
         if ( ! aa.currentSong ) aa.playNextSong();
         else pf.home.renderQueue();
+        window.scrollTo(0,0);
       });
     },
     "renderLinks": function() {
@@ -265,6 +266,7 @@ var pf = { // Page Functions
           openPage("home");
           if ( ! aa.currentSong ) aa.playNextSong();
           else pf.home.renderQueue();
+          window.scrollTo(0,0);
         }
       });
       pf.ytselect.webObj.send("video-data-req");
