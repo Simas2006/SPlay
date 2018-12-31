@@ -12,7 +12,7 @@
   <div id="page-home" class="page">
     <button onclick="openPage('mlibrary')">Music Library</button>
     <button onclick="openPage('ytselect')">YouTube</button>
-    <button onclick="openPage('playlists')">Playlists</button>
+    <button onclick="openPage('playlist-main')">Playlists</button>
     <br />
     <br />
     <button onclick="openPage('photos')">Photos</button>
@@ -56,6 +56,9 @@
       <td><button onclick="pf.ytselect.exitPage()">Back</button></td>
       <td><button id="ytselect-queueButton" onclick="pf.ytselect.addToQueue()" disabled="disabled">Add to Queue</button></td>
     </tr></table>
+  </div>
+  <div id="page-playlist-main" class="page">
+    <table id="playlist-main-table"></table>
   </div>
   <audio id="audio"></audio>
   <div id="ytPlayer-box"></webview>

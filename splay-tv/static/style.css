@@ -61,6 +61,23 @@ audio {
   justify-content: center;
   align-items: center;
 }
+#playlist-main-table {
+  width: 100%;
+}
+#playlist-main-table button {
+  width: 100%;
+}
+#playlist-main-table td.titleCol {
+  width: 55%;
+}
+#playlist-main-table,#playlist-main-table tr td {
+  border-collapse: collapse;
+}
+#playlist-main-table td {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 7.5px;
+}
 webview.ytselect {
   flex-grow: 1;
 }

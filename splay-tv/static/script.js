@@ -13,21 +13,21 @@ var pf = { // Page Functions
         nowPlayingDiv.removeChild(nowPlayingDiv.firstChild);
       }
       var arr = pf.home.convertData(aa.currentSong,"Nothing Playing");
-      nowPlayingDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],false));
+      nowPlayingDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],false));
       var queueDiv = document.getElementById("home-queue");
       while ( queueDiv.firstChild ) {
         queueDiv.removeChild(queueDiv.firstChild);
       }
       for ( var i = 0; i < queue.length; i++ ) {
         var arr = pf.home.convertData(queue[i],null);
-        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],true,i));
+        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],true,i));
       }
       if ( queue.length <= 0 ) {
         var arr = pf.home.convertData(null,"No Songs in Queue");
-        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],arr[3],false));
+        queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],false));
       }
     },
-    "generateQueueElement": function(type,title,subtitle,playlist,showButtons,queueID) {
+    "generateQueueElement": function(type,title,subtitle,showButtons,queueID) {
       var table = document.createElement("table");
       table.className = "queueElement";
       var row = document.createElement("tr");
@@ -46,9 +46,6 @@ var pf = { // Page Functions
       var subtitleObj = document.createElement("p");
       subtitleObj.innerText = subtitle;
       col2.appendChild(subtitleObj);
-      var playlistObj = document.createElement("p");
-      playlistObj.innerText = playlist;
-      col2.appendChild(playlistObj);
       row.appendChild(col2);
       var col3 = document.createElement("td");
       var button1 = document.createElement("button");
@@ -115,7 +112,6 @@ var pf = { // Page Functions
         return [
           "nothing",
           nothingText,
-          "",
           ""
         ];
       } else if ( obj.type == "library" ) {
@@ -131,15 +127,13 @@ var pf = { // Page Functions
         return [
           "library",
           songName,
-          subtitle,
-          obj.playlist || ""
+          subtitle
         ];
       } else if ( obj.type == "youtube" ) {
         return [
           "youtube",
           obj.ytMetadata.title,
-          obj.ytMetadata.author,
-          obj.playlist || ""
+          obj.ytMetadata.author
         ];
       }
     }
@@ -275,6 +269,41 @@ var pf = { // Page Functions
       clearInterval(pf.ytselect.interval);
       document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
       openPage("home");
+    }
+  },
+  "playlist-main": {
+    "load": function() {
+      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+        if ( err ) throw err;
+        var data = JSON.parse(data.toString());
+        var table = document.getElementById("playlist-main-table");
+        for ( var i = 0; i < data.length; i++ ) {
+          var row = document.createElement("tr");
+          var col1 = document.createElement("td");
+          col1.className = "titleCol";
+          col1.innerText = data[i].name;
+          row.appendChild(col1);
+          var col2 = document.createElement("td");
+          var button1 = document.createElement("button");
+          button1.innerText = "Add to Queue";
+          button1.id = "bp:" + i;
+          button1.onclick = function() {
+            var index = parseInt(this.id.split(":")[1]);
+            queue = queue.concat(data[index].songs);
+            openPage("home");
+            if ( ! aa.currentSong ) aa.playNextSong();
+            else pf.home.renderQueue();
+          }
+          col2.appendChild(button1);
+          row.appendChild(col2);
+          var col3 = document.createElement("td");
+          var button2 = document.createElement("button");
+          button2.innerText = "Edit Playlist";
+          col3.appendChild(button2);
+          row.appendChild(col3);
+          table.appendChild(row);
+        }
+      });
     }
   }
 }
