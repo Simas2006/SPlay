@@ -328,6 +328,9 @@ var pf = { // Page Functions
       var obj = pf["playlist-edit"].currentPlaylist;
       document.getElementById("playlist-edit-title").innerText = obj.name;
       var table = document.getElementById("playlist-edit-table");
+      while ( table.firstChild ) {
+        table.removeChild(table.firstChild);
+      }
       for ( var i = 0; i < obj.songs.length; i++ ) {
         var row = document.createElement("tr");
         row.className = "playlistElement";
@@ -365,6 +368,12 @@ var pf = { // Page Functions
         var button = document.createElement("button");
         button.innerText = "X";
         button.className = "delete";
+        button.id = "br:" + i;
+        button.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          pf["playlist-edit"].currentPlaylist.songs.splice(index,1);
+          pf["playlist-edit"].renderPlaylist();
+        }
         col3.appendChild(button);
         row.appendChild(col3);
         table.appendChild(row);
