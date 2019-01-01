@@ -35,6 +35,10 @@ var pf = { // Page Functions
       col1.className = "typeData";
       var icon = document.createElement("p");
       icon.innerText = ["♫","▶"," "][["library","youtube","nothing"].indexOf(type)];
+      if ( type == "youtube" ) {
+        col1.style.backgroundColor = "red";
+        icon.style.color = "white";
+      }
       col1.appendChild(icon);
       row.appendChild(col1);
       var col2 = document.createElement("td");
@@ -338,6 +342,10 @@ var pf = { // Page Functions
         col1.className = "typeData";
         var icon = document.createElement("p");
         icon.innerText = ["♫","▶"][["library","youtube"].indexOf(obj.songs[i].type)];
+        if ( obj.songs[i].type == "youtube" ) {
+          col1.style.backgroundColor = "red";
+          icon.style.color = "white";
+        }
         col1.appendChild(icon);
         row.appendChild(col1);
         var col2 = document.createElement("td");

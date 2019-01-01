@@ -113,6 +113,7 @@ webview.hidden {
   width: 5vw;
   border-radius: 15%;
   background-color: white;
+  border: 1px solid gray;
 }
 .queueElement td.songData {
   width: 35vw;
