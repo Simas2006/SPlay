@@ -299,11 +299,76 @@ var pf = { // Page Functions
           var col3 = document.createElement("td");
           var button2 = document.createElement("button");
           button2.innerText = "Edit Playlist";
+          button2.id = "be:" + i;
+          button2.onclick = function() {
+            var index = parseInt(this.id.split(":")[1]);
+            pf["playlist-edit"].currentPlaylistIndex = index;
+            openPage("playlist-edit");
+          }
           col3.appendChild(button2);
           row.appendChild(col3);
           table.appendChild(row);
         }
       });
+    }
+  },
+  "playlist-edit": {
+    "currentPlaylistIndex": null,
+    "currentPlaylist": null,
+    "load": function() {
+      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+        if ( err ) throw err;
+        data = JSON.parse(data.toString());
+        var obj = data[pf["playlist-edit"].currentPlaylistIndex];
+        pf["playlist-edit"].currentPlaylist = obj;
+        pf["playlist-edit"].renderPlaylist();
+      });
+    },
+    "renderPlaylist": function() {
+      var obj = pf["playlist-edit"].currentPlaylist;
+      document.getElementById("playlist-edit-title").innerText = obj.name;
+      var table = document.getElementById("playlist-edit-table");
+      for ( var i = 0; i < obj.songs.length; i++ ) {
+        var row = document.createElement("tr");
+        row.className = "playlistElement";
+        var col1 = document.createElement("td");
+        col1.className = "typeData";
+        var icon = document.createElement("p");
+        icon.innerText = ["♫","▶"][["library","youtube"].indexOf(obj.songs[i].type)];
+        col1.appendChild(icon);
+        row.appendChild(col1);
+        var col2 = document.createElement("td");
+        col2.className = "songData";
+        var title,subtitle;
+        if ( obj.songs[i].type == "library" ) {
+          var path = obj.songs[i].path.split("/");
+          var title = path[path.length - 1];
+          for ( var j = 0; j < title.length; j++ ) {
+            if ( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(title.charAt(j)) > -1 ) break;
+          }
+          title = title.slice(j).split(".").slice(0,-1).join(".");
+          if ( path.length == 3 ) subtitle = path[1];
+          else subtitle = `${path[path.length - 2]} (${path[path.length - 3]})`;
+        } else if ( obj.songs[i].type == "youtube" ) {
+          title = obj.songs[i].ytMetadata.title;
+          subtitle = obj.songs[i].ytMetadata.author;
+        }
+        var titleObj = document.createElement("p");
+        titleObj.innerText = title;
+        titleObj.className = "songTitleText";
+        col2.appendChild(titleObj);
+        var subtitleObj = document.createElement("p");
+        subtitleObj.innerText = subtitle;
+        col2.appendChild(subtitleObj);
+        row.appendChild(col2);
+        var col3 = document.createElement("td");
+        var button = document.createElement("button");
+        button.innerText = "X";
+        button.className = "delete";
+        col3.appendChild(button);
+        row.appendChild(col3);
+        table.appendChild(row);
+      }
     }
   }
 }

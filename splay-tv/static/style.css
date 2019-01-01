@@ -23,6 +23,7 @@ a {
   text-decoration: none;
   cursor: pointer;
   user-select: none;
+  font-size: var(--fsize-100);
 }
 audio {
   display: none;
@@ -78,6 +79,10 @@ audio {
   border-bottom: 1px solid black;
   padding: 7.5px;
 }
+#playlist-edit-title {
+  font-size: calc(var(--fsize-100) * 1.25);
+  padding-bottom: 15px;
+}
 webview.ytselect {
   flex-grow: 1;
 }
@@ -125,4 +130,23 @@ webview.hidden {
   background-color: #a8a8a8;
   color: #a8a8a8;
   border: 2px solid #a8a8a8;
+}
+.playlistElement .typeData {
+  font-size: calc(var(--fsize-100) * 1.5);
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 15%;
+  border: 1px solid gray;
+  text-align: center;
+}
+.playlistElement .songData {
+  padding-left: 10px;
+  width: 100%;
+}
+.playlistElement > .songData > p:not(.songTitleText) {
+  font-size: calc(var(--fsize-100) * 0.75);
+}
+.playlistElement .delete {
+  background-color: red;
+  color: white;
 }
