@@ -345,6 +345,18 @@ var pf = { // Page Functions
       for ( var i = 0; i < obj.songs.length; i++ ) {
         var row = document.createElement("tr");
         row.className = "playlistElement";
+        var col3 = document.createElement("td");
+        var button = document.createElement("button");
+        button.innerText = "X";
+        button.className = "delete";
+        button.id = "br:" + i;
+        button.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          pf["playlist-edit"].currentPlaylist.songs.splice(index,1);
+          pf["playlist-edit"].renderPlaylist();
+        }
+        col3.appendChild(button);
+        row.appendChild(col3);
         var col1 = document.createElement("td");
         col1.className = "typeData";
         var icon = document.createElement("p");
@@ -379,18 +391,6 @@ var pf = { // Page Functions
         subtitleObj.innerText = subtitle;
         col2.appendChild(subtitleObj);
         row.appendChild(col2);
-        var col3 = document.createElement("td");
-        var button = document.createElement("button");
-        button.innerText = "X";
-        button.className = "delete";
-        button.id = "br:" + i;
-        button.onclick = function() {
-          var index = parseInt(this.id.split(":")[1]);
-          pf["playlist-edit"].currentPlaylist.songs.splice(index,1);
-          pf["playlist-edit"].renderPlaylist();
-        }
-        col3.appendChild(button);
-        row.appendChild(col3);
         table.appendChild(row);
       }
     }
