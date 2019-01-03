@@ -314,6 +314,13 @@ var pf = { // Page Functions
           table.appendChild(row);
         }
       });
+    },
+    "returnToPage": function() {
+      var table = document.getElementById("playlist-main-table");
+      while ( table.firstChild ) {
+        table.removeChild(table.firstChild);
+      }
+      openPage("playlist-main");
     }
   },
   "playlist-edit": {

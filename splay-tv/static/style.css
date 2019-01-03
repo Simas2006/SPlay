@@ -80,8 +80,11 @@ audio {
   padding: 7.5px;
 }
 #playlist-edit-title {
+  display: inline;
   font-size: calc(var(--fsize-100) * 1.25);
-  padding-bottom: 15px;
+}
+#playlist-edit-back {
+  margin-right: 6px;
 }
 webview.ytselect {
   flex-grow: 1;
