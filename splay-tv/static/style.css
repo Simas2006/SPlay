@@ -79,6 +79,9 @@ audio {
   border-bottom: 1px solid black;
   padding: 7.5px;
 }
+#playlist-edit-table td {
+  border-bottom: 1px solid gray;
+}
 #playlist-edit-title {
   display: inline;
   font-size: calc(var(--fsize-100) * 1.25);
