@@ -79,6 +79,10 @@ audio {
   border-bottom: 1px solid black;
   padding: 7.5px;
 }
+#page-playlist-edit .delete {
+  background-color: darkred;
+  color: white;
+}
 #playlist-edit-title {
   display: inline;
   font-size: calc(var(--fsize-100) * 1.25);
@@ -150,8 +154,4 @@ webview.hidden {
 }
 .playlistElement > .songData > p:not(.songTitleText) {
   font-size: calc(var(--fsize-100) * 0.75);
-}
-.playlistElement .delete {
-  background-color: darkred;
-  color: white;
 }

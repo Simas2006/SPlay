@@ -151,7 +151,8 @@ var pf = { // Page Functions
     },
     "back": function() {
       if ( pf.mlibrary.path == "/" ) {
-        openPage("home");
+        if ( ! pf.mlibrary.playlistMode ) openPage("home");
+        else pf.mlibrary.playlistReturn([]);
         return;
       }
       pf.mlibrary.path = pf.mlibrary.path.split("/").slice(0,-2).concat([""]).join("/");
@@ -173,6 +174,10 @@ var pf = { // Page Functions
             "type": "library",
             "path": `${pf.mlibrary.path}${item}`
           }});
+        if ( pf.mlibrary.playlistMode ) {
+          pf.mlibrary.playlistReturn(list);
+          return;
+        }
         queue = queue.concat(list);
         openPage("home");
         if ( ! aa.currentSong ) aa.playNextSong();
@@ -307,6 +312,7 @@ var pf = { // Page Functions
           button2.onclick = function() {
             var index = parseInt(this.id.split(":")[1]);
             pf["playlist-edit"].currentPlaylistIndex = index;
+            pf["playlist-edit"].currentPlaylist = data[index];
             openPage("playlist-edit");
           }
           col3.appendChild(button2);
@@ -327,13 +333,7 @@ var pf = { // Page Functions
     "currentPlaylistIndex": null,
     "currentPlaylist": null,
     "load": function() {
-      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
-        if ( err ) throw err;
-        data = JSON.parse(data.toString());
-        var obj = data[pf["playlist-edit"].currentPlaylistIndex];
-        pf["playlist-edit"].currentPlaylist = obj;
-        pf["playlist-edit"].renderPlaylist();
-      });
+      pf["playlist-edit"].renderPlaylist();
     },
     "renderPlaylist": function() {
       var obj = pf["playlist-edit"].currentPlaylist;
@@ -392,6 +392,17 @@ var pf = { // Page Functions
         col2.appendChild(subtitleObj);
         row.appendChild(col2);
         table.appendChild(row);
+      }
+    },
+    "addNewSong": function(type) {
+      if ( type == "library" ) {
+        pf.mlibrary.playlistMode = true;
+        pf.mlibrary.playlistReturn = function(songs) {
+          pf["playlist-edit"].currentPlaylist.songs = pf["playlist-edit"].currentPlaylist.songs.concat(songs);
+          openPage("playlist-edit");
+          window.scrollTo(0,0);
+        }
+        openPage("mlibrary");
       }
     }
   }
