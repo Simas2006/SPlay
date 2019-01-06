@@ -206,6 +206,12 @@ var pf = { // Page Functions
           }
           for ( var i = 0; i < list.length; i++ ) {
             var a = document.createElement("a");
+            if ( ! isDir ) {
+              for ( var j = 0; j < list[i].length; j++ ) {
+                if ( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(list[i].charAt(j)) > -1 ) break;
+              }
+              list[i] = list[i].slice(j).split(".").slice(0,-1).join(".");
+            }
             a.innerText = list[i];
             if ( ! isDir ) a.style.color = pf.mlibrary.selected[i] ? "#00aa00" : "blue";
             a["data-index"] = i;
@@ -345,7 +351,7 @@ var pf = { // Page Functions
       for ( var i = 0; i < obj.songs.length; i++ ) {
         var row = document.createElement("tr");
         row.className = "playlistElement";
-        var col3 = document.createElement("td");
+        var col1 = document.createElement("td");
         var button = document.createElement("button");
         button.innerText = "X";
         button.className = "delete";
@@ -355,20 +361,20 @@ var pf = { // Page Functions
           pf["playlist-edit"].currentPlaylist.songs.splice(index,1);
           pf["playlist-edit"].renderPlaylist();
         }
-        col3.appendChild(button);
-        row.appendChild(col3);
-        var col1 = document.createElement("td");
-        col1.className = "typeData";
+        col1.appendChild(button);
+        row.appendChild(col1);
+        var col2 = document.createElement("td");
+        col2.className = "typeData";
         var icon = document.createElement("p");
         icon.innerText = ["♫","▶"][["library","youtube"].indexOf(obj.songs[i].type)];
         if ( obj.songs[i].type == "youtube" ) {
-          col1.style.backgroundColor = "red";
+          col2.style.backgroundColor = "red";
           icon.style.color = "white";
         }
-        col1.appendChild(icon);
-        row.appendChild(col1);
-        var col2 = document.createElement("td");
-        col2.className = "songData";
+        col2.appendChild(icon);
+        row.appendChild(col2);
+        var col3 = document.createElement("td");
+        col3.className = "songData";
         var title,subtitle;
         if ( obj.songs[i].type == "library" ) {
           var path = obj.songs[i].path.split("/");
@@ -386,11 +392,11 @@ var pf = { // Page Functions
         var titleObj = document.createElement("p");
         titleObj.innerText = title;
         titleObj.className = "songTitleText";
-        col2.appendChild(titleObj);
+        col3.appendChild(titleObj);
         var subtitleObj = document.createElement("p");
         subtitleObj.innerText = subtitle;
-        col2.appendChild(subtitleObj);
-        row.appendChild(col2);
+        col3.appendChild(subtitleObj);
+        row.appendChild(col3);
         table.appendChild(row);
       }
     },
