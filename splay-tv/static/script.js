@@ -308,6 +308,9 @@ var pf = { // Page Functions
         if ( err ) throw err;
         var data = JSON.parse(data.toString());
         var table = document.getElementById("playlist-main-table");
+        while ( table.firstChild ) {
+          table.removeChild(table.firstChild);
+        }
         for ( var i = 0; i < data.length; i++ ) {
           var row = document.createElement("tr");
           var col1 = document.createElement("td");
@@ -342,13 +345,6 @@ var pf = { // Page Functions
           table.appendChild(row);
         }
       });
-    },
-    "returnToPage": function() {
-      var table = document.getElementById("playlist-main-table");
-      while ( table.firstChild ) {
-        table.removeChild(table.firstChild);
-      }
-      openPage("playlist-main");
     }
   },
   "playlist-edit": {

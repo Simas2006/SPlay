@@ -58,10 +58,12 @@
     </tr></table>
   </div>
   <div id="page-playlist-main" class="page">
+    <button onclick="openPage('home')">Back</button>
+    <br />
     <table id="playlist-main-table"></table>
   </div>
   <div id="page-playlist-edit" class="page">
-    <button id="playlist-edit-back" onclick="pf['playlist-main'].returnToPage()">Back</button>
+    <button id="playlist-edit-back" onclick="openPage('playlist-main')">Back</button>
     <h2 id="playlist-edit-title"></h2>
     <br />
     <br />
