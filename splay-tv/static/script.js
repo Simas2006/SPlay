@@ -196,6 +196,7 @@ var pf = { // Page Functions
           document.getElementById("mlibrary-button1").style.display = "none";
           document.getElementById("mlibrary-button2").style.display = "none";
         }
+        document.getElementById("mlibrary-path").innerText = `Album: ${pf.mlibrary.path}`
         var div = document.getElementById("mlibrary-items");
         while ( div.firstChild ) {
           div.removeChild(div.firstChild);

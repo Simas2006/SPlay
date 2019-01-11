@@ -45,6 +45,9 @@ audio {
 #mlibrary-button1,#mlibrary-button2 {
   display: none;
 }
+#mlibrary-path {
+  padding-bottom: 0.7em;
+}
 #page-ytselect {
   flex-flow: column;
   height: 100vh;
