@@ -196,7 +196,7 @@ var pf = { // Page Functions
           document.getElementById("mlibrary-button1").style.display = "none";
           document.getElementById("mlibrary-button2").style.display = "none";
         }
-        document.getElementById("mlibrary-path").innerText = `Album: ${pf.mlibrary.path}`
+        document.getElementById("mlibrary-path").innerText = `Album: ${pf.mlibrary.path}`;
         var div = document.getElementById("mlibrary-items");
         while ( div.firstChild ) {
           div.removeChild(div.firstChild);
@@ -281,14 +281,18 @@ var pf = { // Page Functions
       string = string.slice(0,11);
       pf.ytselect.webObj.addEventListener("ipc-message",event => {
         if ( event.channel == "video-data" ) {
-          var data = event.args[0];
-          queue.push({
+          var data = {
             "type": "youtube",
             "path": string,
-            "ytMetadata": data
-          });
+            "ytMetadata": event.args[0]
+          }
           clearInterval(pf.ytselect.interval);
           document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
+          if ( pf.ytselect.playlistMode ) {
+            pf.ytselect.playlistReturn(data);
+            return;
+          }
+          queue.push(data);
           openPage("home");
           if ( ! aa.currentSong ) aa.playNextSong();
           else pf.home.renderQueue();
@@ -422,6 +426,14 @@ var pf = { // Page Functions
           window.scrollTo(0,0);
         }
         openPage("mlibrary");
+      } else if ( type == "youtube" ) {
+        pf.ytselect.playlistMode = true;
+        pf.ytselect.playlistReturn = function(song) {
+          pf["playlist-edit"].currentPlaylist.songs.push(song);
+          openPage("playlist-edit");
+          window.scrollTo(0,0);
+        }
+        openPage("ytselect");
       }
     }
   }
