@@ -192,6 +192,7 @@ var pf = { // Page Functions
           document.getElementById("mlibrary-button2").style.display = "inline";
           if ( pf.mlibrary.selected.filter(item => ! item).length > 0 || list.length <= 0 ) document.getElementById("mlibrary-button1").innerText = "Select All";
           else document.getElementById("mlibrary-button1").innerText = "Deselect All";
+          document.getElementById("mlibrary-button2").innerText = `Add to ${! pf.mlibrary.playlistMode ? "Queue" : "Playlist"}`;
         } else {
           document.getElementById("mlibrary-button1").style.display = "none";
           document.getElementById("mlibrary-button2").style.display = "none";
@@ -258,6 +259,7 @@ var pf = { // Page Functions
       pf.ytselect.webObj.className = "ytselect";
       document.getElementById("page-ytselect").appendChild(pf.ytselect.webObj);
       var currentState = false;
+      document.getElementById("ytselect-queueButton").innerText = `Add to ${! pf.ytselect.playlistMode ? "Queue" : "Playlist"}`;
       document.getElementById("ytselect-queueButton").disabled = "disabled";
       document.getElementById("ytselect-queueButton").style.color = "gray";
       pf.ytselect.interval = setInterval(function() {
@@ -421,6 +423,7 @@ var pf = { // Page Functions
       if ( type == "library" ) {
         pf.mlibrary.playlistMode = true;
         pf.mlibrary.playlistReturn = function(songs) {
+          pf.mlibrary.playlistMode = false;
           pf["playlist-edit"].currentPlaylist.songs = pf["playlist-edit"].currentPlaylist.songs.concat(songs);
           openPage("playlist-edit");
           window.scrollTo(0,0);
@@ -429,6 +432,7 @@ var pf = { // Page Functions
       } else if ( type == "youtube" ) {
         pf.ytselect.playlistMode = true;
         pf.ytselect.playlistReturn = function(song) {
+          pf.ytselect.playlistMode = false;
           pf["playlist-edit"].currentPlaylist.songs.push(song);
           openPage("playlist-edit");
           window.scrollTo(0,0);
