@@ -439,6 +439,16 @@ var pf = { // Page Functions
         }
         openPage("ytselect");
       }
+    },
+    "savePlaylist": function() {
+      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+        if ( err ) throw err;
+        data = JSON.parse(data.toString());
+        data[pf["playlist-edit"].currentPlaylistIndex] = pf["playlist-edit"].currentPlaylist;
+        fs.writeFile(__dirname + "/../data/playlists.json",JSON.stringify(data),function(err) {
+          openPage("playlist-main");
+        });
+      });
     }
   }
 }
