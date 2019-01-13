@@ -314,6 +314,17 @@ var pf = { // Page Functions
       fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
         if ( err ) throw err;
         var data = JSON.parse(data.toString());
+        data = data.map((item,index) => {
+          return {
+            data: item,
+            index: index
+          }
+        }).sort(function(a,b) {
+          var names = [a,b].map(item => item.data.name.toLowerCase());
+          if ( names[0] < names[1] ) return -1;
+          else if ( names[0] > names[1] ) return 1;
+          else return 0;
+        });
         var table = document.getElementById("playlist-main-table");
         while ( table.firstChild ) {
           table.removeChild(table.firstChild);
@@ -322,7 +333,7 @@ var pf = { // Page Functions
           var row = document.createElement("tr");
           var col1 = document.createElement("td");
           col1.className = "titleCol";
-          col1.innerText = data[i].name;
+          col1.innerText = data[i].data.name;
           row.appendChild(col1);
           var col2 = document.createElement("td");
           var button1 = document.createElement("button");
@@ -330,7 +341,7 @@ var pf = { // Page Functions
           button1.id = "bp:" + i;
           button1.onclick = function() {
             var index = parseInt(this.id.split(":")[1]);
-            queue = queue.concat(data[index].songs);
+            queue = queue.concat(data[index].data.songs);
             openPage("home");
             if ( ! aa.currentSong ) aa.playNextSong();
             else pf.home.renderQueue();
@@ -343,8 +354,8 @@ var pf = { // Page Functions
           button2.id = "be:" + i;
           button2.onclick = function() {
             var index = parseInt(this.id.split(":")[1]);
-            pf["playlist-edit"].currentPlaylistIndex = index;
-            pf["playlist-edit"].currentPlaylist = data[index];
+            pf["playlist-edit"].currentPlaylistIndex = data[index].index;
+            pf["playlist-edit"].currentPlaylist = data[index].data;
             openPage("playlist-edit");
           }
           col3.appendChild(button2);
