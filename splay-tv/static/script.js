@@ -446,6 +446,18 @@ var pf = { // Page Functions
         data = JSON.parse(data.toString());
         data[pf["playlist-edit"].currentPlaylistIndex] = pf["playlist-edit"].currentPlaylist;
         fs.writeFile(__dirname + "/../data/playlists.json",JSON.stringify(data),function(err) {
+          if ( err ) throw err;
+          openPage("playlist-main");
+        });
+      });
+    },
+    "deletePlaylist": function() {
+      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+        if ( err ) throw err;
+        data = JSON.parse(data.toString());
+        data.splice(pf["playlist-edit"].currentPlaylistIndex,1);
+        fs.writeFile(__dirname + "/../data/playlists.json",JSON.stringify(data),function(err) {
+          if ( err ) throw err;
           openPage("playlist-main");
         });
       });
