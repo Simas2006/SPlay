@@ -463,6 +463,7 @@ var pf = { // Page Functions
       });
     },
     "deletePlaylist": function() {
+      if ( ! confirm("Are you sure you want to permanently delete this playlist?") ) return;
       fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
         if ( err ) throw err;
         data = JSON.parse(data.toString());
