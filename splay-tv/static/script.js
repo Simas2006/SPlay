@@ -306,7 +306,8 @@ var pf = { // Page Functions
     "exitPage": function() {
       clearInterval(pf.ytselect.interval);
       document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
-      openPage("home");
+      if ( ! pf.ytselect.playlistMode ) openPage("home");
+      else pf.ytselect.playlistReturn(null);
     }
   },
   "playlist-main": {
@@ -474,7 +475,7 @@ var pf = { // Page Functions
         pf.ytselect.playlistMode = true;
         pf.ytselect.playlistReturn = function(song) {
           pf.ytselect.playlistMode = false;
-          pf["playlist-edit"].currentPlaylist.songs.push(song);
+          if ( song ) pf["playlist-edit"].currentPlaylist.songs.push(song);
           openPage("playlist-edit");
           window.scrollTo(0,0);
         }
