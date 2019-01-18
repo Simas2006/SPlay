@@ -86,10 +86,6 @@ audio {
   border-bottom: 1px solid black;
   padding: 7.5px;
 }
-#page-playlist-edit .delete {
-  background-color: darkred;
-  color: white;
-}
 #playlist-edit-title {
   display: inline;
   font-size: calc(var(--fsize-100) * 1.25);
@@ -114,7 +110,7 @@ webview.hidden {
   border: 1px solid black;
   margin: 0 auto;
 }
-.queueElement button {
+.queueElement button,.playlistElement button {
   display: block;
   font-size: calc(var(--fsize-100) * 0.75);
   padding: 2.5px;

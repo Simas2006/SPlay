@@ -382,29 +382,59 @@ var pf = { // Page Functions
         var row = document.createElement("tr");
         row.className = "playlistElement";
         var col1 = document.createElement("td");
-        var button = document.createElement("button");
-        button.innerText = "X";
-        button.className = "delete";
-        button.id = "br:" + i;
-        button.onclick = function() {
+        var button1 = document.createElement("button");
+        button1.innerText = "⇡";
+        button1.id = "bT:" + i;
+        button1.onclick = function() {
           var index = parseInt(this.id.split(":")[1]);
-          pf["playlist-edit"].currentPlaylist.songs.splice(index,1);
+          obj.songs.splice(0,0,obj.songs.splice(index,1)[0]);
           pf["playlist-edit"].renderPlaylist();
         }
-        col1.appendChild(button);
+        col1.appendChild(button1);
+        var button2 = document.createElement("button");
+        button2.innerText = "X";
+        button2.id = "br:" + i;
+        button2.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          obj.songs.splice(index,1);
+          pf["playlist-edit"].renderPlaylist();
+        }
+        col1.appendChild(button2);
         row.appendChild(col1);
         var col2 = document.createElement("td");
-        col2.className = "typeData";
+        var button3 = document.createElement("button");
+        button3.innerText = "↑";
+        button3.id = "bm:" + i;
+        button3.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          if ( index <= 0 ) return;
+          obj.songs.splice(index - 1,0,obj.songs.splice(index,1)[0]);
+          pf["playlist-edit"].renderPlaylist();
+        }
+        col2.appendChild(button3);
+        var button4 = document.createElement("button");
+        button4.innerText = "↓";
+        button4.id = "bM:" + i;
+        button4.onclick = function() {
+          var index = parseInt(this.id.split(":")[1]);
+          if ( index + 1 >= obj.songs.length ) return;
+          obj.songs.splice(index + 1,0,obj.songs.splice(index,1)[0]);
+          pf["playlist-edit"].renderPlaylist();
+        }
+        col2.appendChild(button4);
+        row.appendChild(col2);
+        var col3 = document.createElement("td");
+        col3.className = "typeData";
         var icon = document.createElement("p");
         icon.innerText = ["♫","▶"][["library","youtube"].indexOf(obj.songs[i].type)];
         if ( obj.songs[i].type == "youtube" ) {
-          col2.style.backgroundColor = "red";
+          col3.style.backgroundColor = "red";
           icon.style.color = "white";
         }
-        col2.appendChild(icon);
-        row.appendChild(col2);
-        var col3 = document.createElement("td");
-        col3.className = "songData";
+        col3.appendChild(icon);
+        row.appendChild(col3);
+        var col4 = document.createElement("td");
+        col4.className = "songData";
         var title,subtitle;
         if ( obj.songs[i].type == "library" ) {
           var path = obj.songs[i].path.split("/");
@@ -422,11 +452,11 @@ var pf = { // Page Functions
         var titleObj = document.createElement("p");
         titleObj.innerText = title;
         titleObj.className = "songTitleText";
-        col3.appendChild(titleObj);
+        col4.appendChild(titleObj);
         var subtitleObj = document.createElement("p");
         subtitleObj.innerText = subtitle;
-        col3.appendChild(subtitleObj);
-        row.appendChild(col3);
+        col4.appendChild(subtitleObj);
+        row.appendChild(col4);
         table.appendChild(row);
       }
     },
