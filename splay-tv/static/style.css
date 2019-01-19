@@ -69,11 +69,11 @@ audio {
   width: 100%;
   margin-bottom: 2px;
 }
-#playlist-main-table {
+#playlist-main-table,#page-playlist-main table,#page-playlist-main tr {
   width: 100%;
 }
-#playlist-main-table button {
-  width: 100%;
+#playlist-main-buttons td {
+  width: 33%;
 }
 #playlist-main-table td.titleCol {
   width: 55%;
