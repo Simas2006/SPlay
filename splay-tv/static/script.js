@@ -364,6 +364,27 @@ var pf = { // Page Functions
           table.appendChild(row);
         }
       });
+    },
+    "addNewPlaylist": function(useQueue) {
+      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+        if ( err ) throw err;
+        data = JSON.parse(data.toString());
+        var songs = [];
+        if ( useQueue ) {
+          if ( aa.currentSong ) songs.push(aa.currentSong);
+          songs = songs.concat(queue);
+        }
+        data.push({
+          name: "New Playlist",
+          songs: songs
+        });
+        fs.writeFile(__dirname + "/../data/playlists.json",JSON.stringify(data),function(err) {
+          if ( err ) throw err;
+          pf["playlist-edit"].currentPlaylistIndex = data.length - 1;
+          pf["playlist-edit"].currentPlaylist = data[data.length - 1];
+          openPage("playlist-edit");
+        });
+      });
     }
   },
   "playlist-edit": {

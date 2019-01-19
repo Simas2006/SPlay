@@ -61,10 +61,9 @@
   <div id="page-playlist-main" class="page">
     <table><tr id="playlist-main-buttons">
       <td><button onclick="openPage('home')">Back</button></td>
-      <td><button onclick="openPage('home')">Add New Playlist</button></td>
-      <td><button onclick="openPage('home')">Make Playlist From Queue</button></td>
+      <td><button onclick="pf['playlist-main'].addNewPlaylist(false)">Add New Playlist</button></td>
+      <td><button onclick="pf['playlist-main'].addNewPlaylist(true)">Make Playlist From Queue</button></td>
     </tr></table>
-    <br />
     <table id="playlist-main-table"></table>
   </div>
   <div id="page-playlist-edit" class="page">
