@@ -395,7 +395,10 @@ var pf = { // Page Functions
     },
     "renderPlaylist": function() {
       var obj = pf["playlist-edit"].currentPlaylist;
-      document.getElementById("playlist-edit-title").innerText = obj.name;
+      document.getElementById("playlist-edit-title").value = obj.name;
+      document.getElementById("playlist-edit-title").onchange = function() {
+        obj.name = this.value;
+      }
       var table = document.getElementById("playlist-edit-table");
       while ( table.firstChild ) {
         table.removeChild(table.firstChild);

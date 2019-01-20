@@ -86,8 +86,12 @@ audio {
   border-bottom: 1px solid black;
   padding: 7.5px;
 }
+#playlist-edit-header {
+  display: flex;
+}
 #playlist-edit-title {
-  display: inline;
+  flex: 2;
+  font-family: "DIN Alternate";
   font-size: calc(var(--fsize-100) * 1.25);
 }
 #playlist-edit-back {
