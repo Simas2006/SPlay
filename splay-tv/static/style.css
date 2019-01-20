@@ -97,6 +97,9 @@ audio {
 #playlist-edit-back {
   margin-right: 6px;
 }
+#playlist-edit-empty {
+  display: none;
+}
 webview.ytselect {
   flex-grow: 1;
 }

@@ -399,6 +399,7 @@ var pf = { // Page Functions
       document.getElementById("playlist-edit-title").onchange = function() {
         obj.name = this.value;
       }
+      document.getElementById("playlist-edit-empty").style.display = obj.songs.length == 0 ? "block" : "none";
       var table = document.getElementById("playlist-edit-table");
       while ( table.firstChild ) {
         table.removeChild(table.firstChild);
