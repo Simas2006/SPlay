@@ -162,6 +162,9 @@ webview.hidden {
   width: 100%;
   border-bottom: 1px solid black;
 }
+.playlistElement:first-child .songData {
+  border-top: 1px solid black;
+}
 .playlistElement > .songData > p:not(.songTitleText) {
   font-size: calc(var(--fsize-100) * 0.75);
 }
