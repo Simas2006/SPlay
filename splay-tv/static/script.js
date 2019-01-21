@@ -546,7 +546,7 @@ var pf = { // Page Functions
       fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}`,function(err,list) {
         if ( err ) throw err;
         list = list.filter(item => ! item.startsWith("."));
-        document.getElementById("mlibrary-path").innerText = `Album: ${pf["photos-view"].path}`;
+        document.getElementById("photos-main-path").innerText = `Album: ${pf["photos-main"].path}`;
         var div = document.getElementById("photos-main-items");
         while ( div.firstChild ) {
           div.removeChild(div.firstChild);
