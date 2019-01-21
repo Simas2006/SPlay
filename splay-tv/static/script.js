@@ -530,6 +530,59 @@ var pf = { // Page Functions
         });
       });
     }
+  },
+  "photos-main": {
+    "path": "/",
+    "load": function() {
+      pf["photos-main"].path = "/";
+      pf["photos-main"].renderLinks();
+    },
+    "back": function() {
+      if ( pf["photos-main"].path == "/" ) openPage("home");
+      pf["photos-main"].path = pf["photos-main"].path.split("/").slice(0,-2).concat([""]).join("/");
+      pf["photos-main"].renderLinks();
+    },
+    "renderLinks": function() {
+      fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}`,function(err,list) {
+        if ( err ) throw err;
+        list = list.filter(item => ! item.startsWith("."));
+        document.getElementById("mlibrary-path").innerText = `Album: ${pf["photos-view"].path}`;
+        var div = document.getElementById("photos-main-items");
+        while ( div.firstChild ) {
+          div.removeChild(div.firstChild);
+        }
+        for ( var i = 0; i < list.length; i++ ) {
+          var a = document.createElement("a");
+          a.innerText = list[i];
+          a["data-index"] = i;
+          a.onclick = function() {
+            var index = parseInt(this["data-index"]);
+            fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}`,function(err,sublist) {
+              if ( err ) throw err;
+              sublist = sublist.filter(item => ! item.startsWith("."));
+              if ( sublist.length > 0 ) {
+                fs.stat(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}/${sublist[0]}`,function(err,stats) {
+                  if ( err ) throw err;
+                  if ( stats.isDirectory() ) {
+                    pf["photos-main"].path += list[index] + "/";
+                    pf["photos-main"].renderLinks();
+                  } else {
+                    pf["photos-view"].path = pf["photos-main"].path + list[index] + "/";
+                    openPage("photos-view");
+                  }
+                });
+              }
+            });
+          }
+          div.appendChild(a);
+        }
+        if ( list.length <= 0 ) {
+          var p = document.createElement("p");
+          p.innerText = "No photos in album!";
+          div.appendChild(p);
+        }
+      });
+    }
   }
 }
 

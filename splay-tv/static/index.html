@@ -15,7 +15,7 @@
     <button onclick="openPage('playlist-main')">Playlists</button>
     <br />
     <br />
-    <button onclick="openPage('photos')">Photos</button>
+    <button onclick="openPage('photos-main')">Photos</button>
     <button onclick="openPage('web')">Web Browser</button>
     <button onclick="openPage('settings')">Settings</button>
     <br />
@@ -80,6 +80,12 @@
       <button onclick="pf['playlist-edit'].addNewSong('youtube')">Add YouTube Video</button>
       <button onclick="pf['playlist-edit'].deletePlaylist()" class="delete">Delete Playlist</button>
     </div>
+  </div>
+  <div id="page-photos-main" class="page">
+    <p id="photos-main-path">Album: /</p>
+    <div id="photos-main-items"></div>
+    <br />
+    <button onclick="pf['photos-main'].back()">Back</button>
   </div>
   <audio id="audio"></audio>
   <div id="ytPlayer-box"></div>
