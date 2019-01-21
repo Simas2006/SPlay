@@ -312,7 +312,7 @@ var pf = { // Page Functions
   },
   "playlist-main": {
     "load": function() {
-      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         var data = JSON.parse(data.toString());
         data = data.map((item,index) => {
@@ -366,7 +366,7 @@ var pf = { // Page Functions
       });
     },
     "addNewPlaylist": function(useQueue) {
-      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         data = JSON.parse(data.toString());
         var songs = [];
@@ -378,7 +378,7 @@ var pf = { // Page Functions
           name: "New Playlist",
           songs: songs
         });
-        fs.writeFile(__dirname + "/../data/playlists.json",JSON.stringify(data),function(err) {
+        fs.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
           if ( err ) throw err;
           pf["playlist-edit"].currentPlaylistIndex = data.length - 1;
           pf["playlist-edit"].currentPlaylist = data[data.length - 1];
@@ -508,11 +508,11 @@ var pf = { // Page Functions
       }
     },
     "savePlaylist": function() {
-      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         data = JSON.parse(data.toString());
         data[pf["playlist-edit"].currentPlaylistIndex] = pf["playlist-edit"].currentPlaylist;
-        fs.writeFile(__dirname + "/../data/playlists.json",JSON.stringify(data),function(err) {
+        fs.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
           if ( err ) throw err;
           openPage("playlist-main");
         });
@@ -520,11 +520,11 @@ var pf = { // Page Functions
     },
     "deletePlaylist": function() {
       if ( ! confirm("Are you sure you want to permanently delete this playlist?") ) return;
-      fs.readFile(__dirname + "/../data/playlists.json",function(err,data) {
+      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         data = JSON.parse(data.toString());
         data.splice(pf["playlist-edit"].currentPlaylistIndex,1);
-        fs.writeFile(__dirname + "/../data/playlists.json",JSON.stringify(data),function(err) {
+        fs.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
           if ( err ) throw err;
           openPage("playlist-main");
         });
