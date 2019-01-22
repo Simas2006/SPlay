@@ -593,6 +593,7 @@ var pf = { // Page Functions
         if ( err ) throw err;
         pf["photos-view"].files = list.filter(item => ! item.startsWith(".") && ["jpg","png","tiff","gif"].indexOf(item.split(".").slice(-1)[0].toLowerCase()) > -1);
         document.getElementById("photos-view-path").innerText = `Album: ${pf["photos-view"].path}`;
+        pf["photos-view"].path = encodeURIComponent(pf["photos-view"].path).split("%2F").join("/");
         document.body.style.margin = 0;
         document.getElementsByTagName("hr")[0].style.margin = 0;
         pf["photos-view"].showImage();
@@ -602,7 +603,7 @@ var pf = { // Page Functions
       document.getElementById("photos-view-name").innerText = pf["photos-view"].files[pf["photos-view"].index];
       var imgElement = document.getElementById("photos-view-img");
       var img = new Image();
-      img.src = `${DATA_FOLDER}/photos/${pf["photos-view"].path}/${pf["photos-view"].files[pf["photos-view"].index]}`;
+      img.src = `${DATA_FOLDER}/photos/${pf["photos-view"].path}/${encodeURIComponent(pf["photos-view"].files[pf["photos-view"].index])}`;
       img.onload = function() {
         var fullHeight = window.innerHeight - document.body.clientHeight;
         var r;

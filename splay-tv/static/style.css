@@ -100,8 +100,13 @@ audio {
 #playlist-edit-empty {
   display: none;
 }
+#photos-view-img-container {
+  width: 100%;
+}
 #photos-view-img {
   display: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 webview.ytselect {
   flex-grow: 1;
