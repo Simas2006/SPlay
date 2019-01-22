@@ -583,6 +583,47 @@ var pf = { // Page Functions
         }
       });
     }
+  },
+  "photos-view": {
+    "path": null,
+    "files": null,
+    "index": 0,
+    "load": function() {
+      fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-view"].path}`,function(err,list) {
+        if ( err ) throw err;
+        pf["photos-view"].files = list.filter(item => ! item.startsWith(".") && ["jpg","png","tiff","gif"].indexOf(item.split(".").slice(-1)[0].toLowerCase()) > -1);
+        document.getElementById("photos-view-path").innerText = `Album: ${pf["photos-view"].path}`;
+        document.body.style.margin = 0;
+        document.getElementsByTagName("hr")[0].style.margin = 0;
+        pf["photos-view"].showImage();
+      });
+    },
+    "showImage": function() {
+      document.getElementById("photos-view-name").innerText = pf["photos-view"].files[pf["photos-view"].index];
+      var imgElement = document.getElementById("photos-view-img");
+      var img = new Image();
+      img.src = `${DATA_FOLDER}/photos/${pf["photos-view"].path}/${pf["photos-view"].files[pf["photos-view"].index]}`;
+      img.onload = function() {
+        var fullHeight = window.innerHeight - document.body.clientHeight;
+        var r;
+        if ( img.width > window.innerWidth || img.height > fullHeight ) {
+          for ( r = 1; r > 0; r -= 0.01 ) {
+            if ( r * img.width < window.innerWidth && r * img.height < fullHeight ) break;
+          }
+        } else {
+          for ( r = 1; ; r += 0.025 ) {
+            if ( r * img.width > window.innerWidth || r * img.height > fullHeight ) {
+              r -= 0.025;
+              break;
+            }
+          }
+        }
+        imgElement.style.width = (r * img.width) + "px";
+        imgElement.style.height = (r * img.height) + "px";
+        imgElement.src = img.src;
+        imgElement.style.display = "block";
+      }
+    }
   }
 }
 
@@ -687,7 +728,7 @@ class AudioAgent {
 
 function openPage(page) {
   document.getElementById(`page-${currentPage}`).style.display = "none";
-  document.getElementById(`page-${page}`).style.display = page != "ytselect" ? "block" : "flex";
+  document.getElementById(`page-${page}`).style.display = ["ytselect"].indexOf(page) <= -1 ? "block" : "flex";
   currentPage = page;
   pf[page].load();
 }

@@ -100,6 +100,9 @@ audio {
 #playlist-edit-empty {
   display: none;
 }
+#photos-view-img {
+  display: none;
+}
 webview.ytselect {
   flex-grow: 1;
 }
