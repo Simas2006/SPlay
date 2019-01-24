@@ -82,14 +82,23 @@
     </div>
   </div>
   <div id="page-photos-main" class="page">
-    <p id="photos-main-path">Album: /</p>
+    <p id="photos-main-path"></p>
     <div id="photos-main-items"></div>
     <br />
     <button onclick="pf['photos-main'].back()">Back</button>
   </div>
   <div id="page-photos-view" class="page">
-    <h3 id="photos-view-name">IMG_1234.JPG</h3>
-    <p id="photos-view-path">Album: /</p>
+    <table><tr>
+      <td id="photos-view-controls">
+        <button onclick="pf['photos-view'].exitPage()">Back</button>
+        <button onclick="pf['photos-view'].movePicture(-1)" class="bold">←</button>
+        <button onclick="pf['photos-view'].movePicture(1)" class="bold">→</button>
+      </td>
+      <td>
+        <h3 id="photos-view-name">a</h3>
+        <p id="photos-view-path">a</p>
+      </td>
+    </tr></table>
     <div id="photos-view-img-container">
       <img id="photos-view-img" />
     </div>

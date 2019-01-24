@@ -605,10 +605,10 @@ var pf = { // Page Functions
       var img = new Image();
       img.src = `${DATA_FOLDER}/photos/${pf["photos-view"].path}/${encodeURIComponent(pf["photos-view"].files[pf["photos-view"].index])}`;
       img.onload = function() {
-        var fullHeight = window.innerHeight - document.body.clientHeight;
+        var fullHeight = window.innerHeight - (document.body.clientHeight - imgElement.clientHeight);
         var r;
         if ( img.width > window.innerWidth || img.height > fullHeight ) {
-          for ( r = 1; r > 0; r -= 0.01 ) {
+          for ( r = 1; r > 0; r -= 0.025 ) {
             if ( r * img.width < window.innerWidth && r * img.height < fullHeight ) break;
           }
         } else {
@@ -619,11 +619,15 @@ var pf = { // Page Functions
             }
           }
         }
+        imgElement.src = img.src;
         imgElement.style.width = (r * img.width) + "px";
         imgElement.style.height = (r * img.height) + "px";
-        imgElement.src = img.src;
         imgElement.style.display = "block";
       }
+    },
+    "movePicture": function(add) {
+      pf["photos-view"].index += add;
+      pf["photos-view"].showImage();
     }
   }
 }
