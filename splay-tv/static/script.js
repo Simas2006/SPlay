@@ -628,6 +628,12 @@ var pf = { // Page Functions
     "movePicture": function(add) {
       pf["photos-view"].index += add;
       pf["photos-view"].showImage();
+    },
+    "exitPage": function() {
+      document.getElementById("photos-view-img").style.display = "none";
+      document.body.style.margin = "";
+      document.getElementsByTagName("hr")[0].style.margin = "";
+      openPage("home");
     }
   }
 }
