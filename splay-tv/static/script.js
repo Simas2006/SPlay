@@ -1,4 +1,5 @@
 var fs = require("fs");
+var ExifImage = require("exif").ExifImage;
 var DATA_FOLDER = __dirname + "/../data";
 
 var currentPage = "home";
@@ -602,27 +603,47 @@ var pf = { // Page Functions
     "showImage": function() {
       document.getElementById("photos-view-name").innerText = pf["photos-view"].files[pf["photos-view"].index];
       var imgElement = document.getElementById("photos-view-img");
+      var path = `${DATA_FOLDER}/photos/${pf["photos-view"].path}/${encodeURIComponent(pf["photos-view"].files[pf["photos-view"].index])}`;
       var img = new Image();
-      img.src = `${DATA_FOLDER}/photos/${pf["photos-view"].path}/${encodeURIComponent(pf["photos-view"].files[pf["photos-view"].index])}`;
+      img.src = path;
       img.onload = function() {
-        var fullHeight = window.innerHeight - (document.body.clientHeight - imgElement.clientHeight);
-        var r;
-        if ( img.width > window.innerWidth || img.height > fullHeight ) {
-          for ( r = 1; r > 0; r -= 0.025 ) {
-            if ( r * img.width < window.innerWidth && r * img.height < fullHeight ) break;
-          }
-        } else {
-          for ( r = 1; ; r += 0.025 ) {
-            if ( r * img.width > window.innerWidth || r * img.height > fullHeight ) {
-              r -= 0.025;
-              break;
+        new ExifImage({image: decodeURIComponent(path)},function(err,data) {
+          var orientation;
+          if ( err ) orientation = 1;
+          else orientation = data.image.Orientation || 1;
+          var fullHeight = window.innerHeight - (document.body.clientHeight - imgElement.clientHeight);
+          var r,width,height;
+          if ( [6,8].indexOf(orientation) <= -1 ) [width,height] = [img.width,img.height];
+          else [width,height] = [img.height,img.width];
+          if ( width > window.innerWidth || height > fullHeight ) {
+            for ( r = 1; r > 0; r -= 0.001 ) {
+              if ( r * width < window.innerWidth && r * height < fullHeight ) break;
+            }
+          } else {
+            for ( r = 1; ; r += 0.001 ) {
+              if ( r * width > window.innerWidth || r * height > fullHeight ) {
+                r -= 0.001;
+                break;
+              }
             }
           }
-        }
-        imgElement.src = img.src;
-        imgElement.style.width = (r * img.width) + "px";
-        imgElement.style.height = (r * img.height) + "px";
-        imgElement.style.display = "block";
+          var styleEntries = [
+            ["","center"],
+            ["","center"],
+            ["rotate(180deg)","center"],
+            ["","center"],
+            ["","center"],
+            ["translateY(-100%) translateX(12.5%) rotate(90deg)","bottom left"],
+            ["","center"],
+            ["translateX(-87.5%) rotate(270deg)","top right"]
+          ];
+          imgElement.src = path;
+          imgElement.style.width = (r * img.width) + "px";
+          imgElement.style.height = (r * img.height) + "px";
+          imgElement.style.transform = styleEntries[orientation - 1][0];
+          imgElement.style.transformOrigin = styleEntries[orientation - 1][1];
+          imgElement.style.display = "block";
+        });
       }
     },
     "movePicture": function(add) {

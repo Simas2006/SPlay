@@ -10,5 +10,8 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^4.0.0"
+  },
+  "dependencies": {
+    "exif": "^0.6.0"
   }
 }
