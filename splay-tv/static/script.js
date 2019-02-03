@@ -611,7 +611,9 @@ var pf = { // Page Functions
           var orientation;
           if ( err ) orientation = 1;
           else orientation = data.image.Orientation || 1;
-          var fullHeight = window.innerHeight - (document.body.clientHeight - imgElement.clientHeight);
+          var container = document.getElementById("photos-view-img-container");
+          var fullHeight = window.innerHeight - (document.body.clientHeight - container.clientHeight);
+          container.style.height = fullHeight + "px";
           var r,width,height;
           if ( [6,8].indexOf(orientation) <= -1 ) [width,height] = [img.width,img.height];
           else [width,height] = [img.height,img.width];
@@ -628,20 +630,21 @@ var pf = { // Page Functions
             }
           }
           var styleEntries = [
-            ["","center"],
-            ["","center"],
-            ["rotate(180deg)","center"],
-            ["","center"],
-            ["","center"],
-            ["translateY(-100%) translateX(12.5%) rotate(90deg)","bottom left"],
-            ["","center"],
-            ["translateX(-87.5%) rotate(270deg)","top right"]
+            ["","center","center"],
+            ["","center","center"],
+            ["rotate(180deg)","center","center"],
+            ["","center","center"],
+            ["","center","center"],
+            ["translateY(-100%) translateX(12.5%) rotate(90deg)","bottom left",""],
+            ["","center","center"],
+            ["translateX(-87.5%) rotate(270deg)","top right",""]
           ];
           imgElement.src = path;
           imgElement.style.width = (r * img.width) + "px";
           imgElement.style.height = (r * img.height) + "px";
           imgElement.style.transform = styleEntries[orientation - 1][0];
           imgElement.style.transformOrigin = styleEntries[orientation - 1][1];
+          container.style.alignItems = styleEntries[orientation - 1][2];
           imgElement.style.display = "block";
         });
       }

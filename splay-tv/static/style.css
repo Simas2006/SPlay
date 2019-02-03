@@ -101,6 +101,7 @@ audio {
   display: none;
 }
 #photos-view-img-container {
+  display: flex;
   width: 100%;
 }
 #photos-view-img {
