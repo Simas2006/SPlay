@@ -592,6 +592,9 @@ var pf = { // Page Functions
     "load": function() {
       fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-view"].path}`,function(err,list) {
         if ( err ) throw err;
+        pf["photos-view"].index = 0;
+        document.getElementById("photos-view-backward").disabled = "disabled";
+        document.getElementById("photos-view-forward").disabled = "";
         pf["photos-view"].files = list.filter(item => ! item.startsWith(".") && ["jpg","png","tiff","gif"].indexOf(item.split(".").slice(-1)[0].toLowerCase()) > -1);
         document.getElementById("photos-view-path").innerText = `Album: ${pf["photos-view"].path}`;
         pf["photos-view"].path = encodeURIComponent(pf["photos-view"].path).split("%2F").join("/");
@@ -646,10 +649,13 @@ var pf = { // Page Functions
           imgElement.style.transformOrigin = styleEntries[orientation - 1][1];
           container.style.alignItems = styleEntries[orientation - 1][2];
           imgElement.style.display = "block";
+          document.getElementById("photos-view-backward").disabled = pf["photos-view"].index <= 0 ? "disabled" : "";
+          document.getElementById("photos-view-forward").disabled = (pf["photos-view"].index + 1 >= pf["photos-view"].files.length) ? "disabled" : "";
         });
       }
     },
     "movePicture": function(add) {
+      if ( pf["photos-view"].index + add < 0 || pf["photos-view"].index + add >= pf["photos-view"].files.length ) return;
       pf["photos-view"].index += add;
       pf["photos-view"].showImage();
     },

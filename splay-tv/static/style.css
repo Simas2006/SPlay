@@ -100,6 +100,9 @@ audio {
 #playlist-edit-empty {
   display: none;
 }
+#page-photos-view button:disabled {
+  color: gray;
+}
 #photos-view-img-container {
   display: flex;
   width: 100%;
