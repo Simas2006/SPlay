@@ -1,18 +1,17 @@
 body {
-  --fsize-100: 100%;
   font-family: "DIN Alternate";
   text-align: center;
-  font-size: calc(var(--fsize-100) * 1.35);
+  font-size: 135%;
 }
 body *:not(hr):not(table) {
   margin: 0;
 }
 h1 {
-  font-size: calc(var(--fsize-100) * 2);
+  font-size: 200%;
 }
 button {
   display: inline;
-  font-size: var(--fsize-100);
+  font-size: 100%;
   font-family: "DIN Alternate";
   padding: 10px;
   background-color: white;
@@ -23,7 +22,7 @@ a {
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  font-size: var(--fsize-100);
+  font-size: 100%;
 }
 audio {
   display: none;
@@ -92,7 +91,7 @@ audio {
 #playlist-edit-title {
   flex: 2;
   font-family: "DIN Alternate";
-  font-size: calc(var(--fsize-100) * 1.25);
+  font-size: 125%;
 }
 #playlist-edit-back {
   margin-right: 6px;
@@ -120,6 +119,12 @@ audio {
   font-size: 100%;
   font-family: "DIN Alternate";
 }
+#page-settings {
+  text-align: center;
+}
+#page-settings * {
+  margin-top: 5px;
+}
 webview.fullSize {
   flex-grow: 1;
 }
@@ -139,14 +144,14 @@ webview.hidden {
 }
 .queueElement button,.playlistElement button {
   display: block;
-  font-size: calc(var(--fsize-100) * 0.75);
+  font-size: 75%;
   padding: 2.5px;
   width: 4ch;
   margin-bottom: 4px;
   font-weight: bold;
 }
 .queueElement td.typeData {
-  font-size: calc(var(--fsize-100) * 2.75);
+  font-size: 275%;
   width: 5vw;
   border-radius: 15%;
   background-color: white;
@@ -159,10 +164,10 @@ webview.hidden {
   padding-right: 7.5px;
 }
 .queueElement p.songTitleText {
-  font-size: calc(var(--fsize-100) * 1.25);
+  font-size: 125%;
 }
 .queueElement p:not(.songTitleText) {
-  font-size: calc(var(--fsize-100) * 0.75);
+  font-size: 75%;
 }
 .queueElement button.hidden {
   background-color: #a8a8a8;
@@ -170,7 +175,7 @@ webview.hidden {
   border: 2px solid #a8a8a8;
 }
 .playlistElement .typeData {
-  font-size: calc(var(--fsize-100) * 1.5);
+  font-size: 150%;
   padding-left: 6px;
   padding-right: 6px;
   border-radius: 15%;
@@ -186,5 +191,5 @@ webview.hidden {
   border-top: 1px solid black;
 }
 .playlistElement > .songData > p:not(.songTitleText) {
-  font-size: calc(var(--fsize-100) * 0.75);
+  font-size: 75%;
 }

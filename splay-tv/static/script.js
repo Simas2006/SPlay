@@ -1,5 +1,6 @@
 var fs = require("fs");
 var ExifImage = require("exif").ExifImage;
+var {shell} = require("electron");
 var DATA_FOLDER = __dirname + "/../data";
 
 var currentPage = "home";
@@ -701,6 +702,12 @@ var pf = { // Page Functions
       clearInterval(pf.web.interval);
       document.getElementById("page-web").removeChild(document.getElementById("web-browser"));
       openPage("home");
+    }
+  },
+  "settings": {
+    "load": Function.prototype,
+    "openFolder": function() {
+      shell.openItem(DATA_FOLDER);
     }
   }
 }
