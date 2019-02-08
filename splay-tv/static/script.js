@@ -696,6 +696,11 @@ var pf = { // Page Functions
       pf.web.interval = setInterval(function() {
         if ( urlBox.value != webview.src && ! isFocused ) urlBox.value = webview.src;
       },500);
+    },
+    "exitPage": function() {
+      clearInterval(pf.web.interval);
+      document.getElementById("page-web").removeChild(document.getElementById("web-browser"));
+      openPage("home");
     }
   }
 }
