@@ -677,7 +677,11 @@ var pf = { // Page Functions
       var urlBox = document.getElementById("web-url");
       urlBox.onkeydown = function(event) {
         if ( event.key == "Enter" ) {
-          if ( ! this.value.startsWith("http://") && ! this.value.startsWith("https://") ) this.value = "http://" + this.value;
+          if ( this.value.split(".").length > 1 && this.value.split(".").slice(0,-1).filter(item => item.indexOf(" ") > -1).length <= 0 ) {
+            if ( ! this.value.startsWith("http://") && ! this.value.startsWith("https://") ) this.value = "http://" + this.value;
+          } else {
+            this.value = `https://www.google.com/search?q=${this.value}`;
+          }
           webview.src = this.value;
           this.blur();
         }
