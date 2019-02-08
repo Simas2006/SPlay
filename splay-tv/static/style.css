@@ -112,7 +112,15 @@ audio {
   margin-left: auto;
   margin-right: auto;
 }
-webview.ytselect {
+#page-web {
+  flex-flow: column;
+  height: 100vh;
+}
+#web-url {
+  font-size: 100%;
+  font-family: "DIN Alternate";
+}
+webview.fullSize {
   flex-grow: 1;
 }
 webview.hidden {

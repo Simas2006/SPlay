@@ -257,7 +257,7 @@ var pf = { // Page Functions
       pf.ytselect.webObj = document.createElement("webview");
       pf.ytselect.webObj.preload = "../yt-select-injection.js";
       pf.ytselect.webObj.src = "https://www.youtube.com";
-      pf.ytselect.webObj.className = "ytselect";
+      pf.ytselect.webObj.className = "fullSize";
       document.getElementById("page-ytselect").appendChild(pf.ytselect.webObj);
       var currentState = false;
       document.getElementById("ytselect-queueButton").innerText = `Add to ${! pf.ytselect.playlistMode ? "Queue" : "Playlist"}`;
@@ -665,6 +665,34 @@ var pf = { // Page Functions
       document.getElementsByTagName("hr")[0].style.margin = "";
       openPage("home");
     }
+  },
+  "web": {
+    "interval": null,
+    "load": function() {
+      var webview = document.createElement("webview");
+      webview.id = "web-browser";
+      webview.className = "fullSize";
+      webview.src = "https://www.google.com";
+      document.getElementById("page-web").appendChild(webview);
+      var urlBox = document.getElementById("web-url");
+      urlBox.onkeydown = function(event) {
+        if ( event.key == "Enter" ) {
+          if ( ! this.value.startsWith("http://") && ! this.value.startsWith("https://") ) this.value = "http://" + this.value;
+          webview.src = this.value;
+          this.blur();
+        }
+      }
+      var isFocused = false;
+      urlBox.onfocus = function() {
+        isFocused = true;
+      }
+      urlBox.onblur = function() {
+        isFocused = false;
+      }
+      pf.web.interval = setInterval(function() {
+        if ( urlBox.value != webview.src && ! isFocused ) urlBox.value = webview.src;
+      },500);
+    }
   }
 }
 
@@ -769,7 +797,7 @@ class AudioAgent {
 
 function openPage(page) {
   document.getElementById(`page-${currentPage}`).style.display = "none";
-  document.getElementById(`page-${page}`).style.display = ["ytselect"].indexOf(page) <= -1 ? "block" : "flex";
+  document.getElementById(`page-${page}`).style.display = ["ytselect","web"].indexOf(page) <= -1 ? "block" : "flex";
   currentPage = page;
   pf[page].load();
 }

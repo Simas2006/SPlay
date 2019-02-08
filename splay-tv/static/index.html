@@ -95,13 +95,17 @@
         <button onclick="pf['photos-view'].movePicture(1)" id="photos-view-forward" class="bold">→</button>
       </td>
       <td>
-        <h3 id="photos-view-name">a</h3>
-        <p id="photos-view-path">a</p>
+        <h3 id="photos-view-name"></h3>
+        <p id="photos-view-path"></p>
       </td>
     </tr></table>
     <div id="photos-view-img-container">
       <img id="photos-view-img" />
     </div>
+  </div>
+  <div id="page-web" class="page">
+    <button onclick="pf.web.exitPage()">Back</button>
+    <input id="web-url" onclick="this.setSelectionRange(0,this.value.length)" placeholder="URL..." />
   </div>
   <audio id="audio"></audio>
   <div id="ytPlayer-box"></div>
