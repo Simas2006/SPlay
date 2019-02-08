@@ -256,7 +256,7 @@ var pf = { // Page Functions
     "interval": null,
     "load": function() {
       pf.ytselect.webObj = document.createElement("webview");
-      pf.ytselect.webObj.preload = "../yt-select-injection.js";
+      pf.ytselect.webObj.preload = "../injections/yt-select-injection.js";
       pf.ytselect.webObj.src = "https://www.youtube.com";
       pf.ytselect.webObj.className = "fullSize";
       document.getElementById("page-ytselect").appendChild(pf.ytselect.webObj);
@@ -745,7 +745,7 @@ class AudioAgent {
         this.audio.volume = this.volume / 100;
       } else if ( queue[0].type == "youtube" ) {
         ytPlayer = document.createElement("webview");
-        ytPlayer.preload = "../yt-watch-injection.js";
+        ytPlayer.preload = "../injections/yt-watch-injection.js";
         ytPlayer.src = `https://www.youtube.com/watch?v=${queue[0].path}`;
         ytPlayer.className = "hidden";
         ytPlayer.addEventListener("ipc-message",event => {
