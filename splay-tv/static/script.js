@@ -709,6 +709,9 @@ var pf = { // Page Functions
     "openFolder": function() {
       shell.openItem(DATA_FOLDER);
     }
+  },
+  "ytplayer": {
+    "load": Function.prototype
   }
 }
 
@@ -747,12 +750,12 @@ class AudioAgent {
         ytPlayer = document.createElement("webview");
         ytPlayer.preload = "../injections/yt-watch-injection.js";
         ytPlayer.src = `https://www.youtube.com/watch?v=${queue[0].path}`;
-        ytPlayer.className = "hidden";
+        ytPlayer.className = "fullSize";
         ytPlayer.addEventListener("ipc-message",event => {
           if ( event.channel == "video-ready" ) ytPlayer.send("video-command","setvol",this.volume);
           else if ( event.channel == "video-end" ) this.playNextSong();
         });
-        document.getElementById("ytPlayer-box").appendChild(ytPlayer);
+        document.getElementById("page-ytplayer").appendChild(ytPlayer);
         this.togglePlay(true);
       }
       queue = queue.slice(1);
@@ -812,8 +815,17 @@ class AudioAgent {
 }
 
 function openPage(page) {
-  document.getElementById(`page-${currentPage}`).style.display = "none";
-  document.getElementById(`page-${page}`).style.display = ["ytselect","web"].indexOf(page) <= -1 ? "block" : "flex";
+  if ( page == "ytplayer" ) {
+    document.getElementById("page-ytplayer").style.height = "100vh";
+    document.getElementById("ytplayer-back").style.display = "inline";
+  }
+  if ( currentPage == "ytplayer" ) {
+    document.getElementById("page-ytplayer").style.height = "0px";
+    document.getElementById("ytplayer-back").style.display = "none";
+  } else {
+    document.getElementById(`page-${currentPage}`).style.display = "none";
+  }
+  document.getElementById(`page-${page}`).style.display = ["ytselect","web","ytplayer"].indexOf(page) <= -1 ? "block" : "flex";
   currentPage = page;
   pf[page].load();
 }

@@ -47,7 +47,7 @@ audio {
 #mlibrary-path,#photos-main-path {
   padding-bottom: 0.7em;
 }
-#page-ytselect {
+#page-ytselect,#page-web,#page-ytplayer {
   flex-flow: column;
   height: 100vh;
 }
@@ -111,10 +111,6 @@ audio {
   margin-left: auto;
   margin-right: auto;
 }
-#page-web {
-  flex-flow: column;
-  height: 100vh;
-}
 #web-url {
   font-size: 100%;
   font-family: "DIN Alternate";
@@ -125,12 +121,16 @@ audio {
 #page-settings * {
   margin-top: 5px;
 }
+#page-ytplayer {
+  display: flex !important;
+  width: 100vw;
+  height: 0;
+}
+#ytplayer-back {
+  display: none;
+}
 webview.fullSize {
   flex-grow: 1;
-}
-webview.hidden {
-  width: 0;
-  height: 0;
 }
 .page {
   display: none;

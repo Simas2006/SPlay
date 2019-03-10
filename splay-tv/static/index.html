@@ -33,7 +33,7 @@
       </tr>
       <tr>
         <td><button onclick="aa.shuffleQueue()">&#x1f500;</button></td>
-        <td></td>
+        <td><button onclick="openPage('ytplayer')">MV</button></td>
         <td><button onclick="aa.clearQueue()">X</button></td>
       </tr>
     </table>
@@ -115,7 +115,9 @@
     <button onclick="pf.settings.openFolder()">Open Media Folder</button>
     <button onclick="openPage('home')">Back</button>
   </div>
+  <div id="page-ytplayer" class="page">
+    <button onclick="openPage('home')" id="ytplayer-back">Back</button>
+  </div>
   <audio id="audio"></audio>
-  <div id="ytPlayer-box"></div>
 </body>
 </html>
