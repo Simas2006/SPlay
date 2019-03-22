@@ -27,6 +27,8 @@ var pf = { // Page Functions
         var arr = pf.home.convertData(null,"No Songs in Queue");
         queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],false));
       }
+      if ( aa.songType == "youtube" ) document.getElementById("home-videoButton").disabled = "";
+      else document.getElementById("home-videoButton").disabled = "disabled";
     },
     "generateQueueElement": function(type,title,subtitle,showButtons,queueID) {
       var table = document.createElement("table");
@@ -711,7 +713,9 @@ var pf = { // Page Functions
     }
   },
   "ytplayer": {
-    "load": Function.prototype
+    "load": function() {
+      document.getElementById("ytplayer-back").style.display = "inline";
+    }
   }
 }
 
@@ -815,10 +819,7 @@ class AudioAgent {
 }
 
 function openPage(page) {
-  if ( page == "ytplayer" ) {
-    document.getElementById("page-ytplayer").style.height = "100vh";
-    document.getElementById("ytplayer-back").style.display = "inline";
-  }
+  if ( page == "ytplayer" ) document.getElementById("page-ytplayer").style.height = "100vh";
   if ( currentPage == "ytplayer" ) {
     document.getElementById("page-ytplayer").style.height = "0px";
     document.getElementById("ytplayer-back").style.display = "none";

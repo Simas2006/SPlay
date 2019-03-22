@@ -33,7 +33,7 @@
       </tr>
       <tr>
         <td><button onclick="aa.shuffleQueue()">&#x1f500;</button></td>
-        <td><button onclick="openPage('ytplayer')">MV</button></td>
+        <td><button id="home-videoButton" onclick="openPage('ytplayer')">MV</button></td>
         <td><button onclick="aa.clearQueue()">X</button></td>
       </tr>
     </table>
@@ -116,7 +116,7 @@
     <button onclick="openPage('home')">Back</button>
   </div>
   <div id="page-ytplayer" class="page">
-    <button onclick="openPage('home')" id="ytplayer-back">Back</button>
+    <button id="ytplayer-back" onclick="openPage('home')">Back</button>
   </div>
   <audio id="audio"></audio>
 </body>
