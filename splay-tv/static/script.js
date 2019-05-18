@@ -1,4 +1,4 @@
-var fs = require("fs");
+var fileio = require("fs");
 var ExifImage = require("exif").ExifImage;
 var {shell} = require("electron");
 var DATA_FOLDER = __dirname + "/../data";
@@ -170,7 +170,7 @@ var pf = { // Page Functions
       pf.mlibrary.renderLinks();
     },
     "addToQueue": function() {
-      fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
+      fileio.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
         list = list.filter((item,index) => pf.mlibrary.selected[index])
           .map(item => {return {
@@ -240,10 +240,10 @@ var pf = { // Page Functions
           document.getElementById("mlibrary-button2").disabled = "";
         }
       }
-      fs.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
+      fileio.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
         if ( list.length > 0 ) {
-          fs.stat(`${DATA_FOLDER}/music/${pf.mlibrary.path}/${list[0]}`,function(err,stats) {
+          fileio.stat(`${DATA_FOLDER}/music/${pf.mlibrary.path}/${list[0]}`,function(err,stats) {
             var isDir = stats.isDirectory();
             merge(list,isDir);
           });
@@ -316,7 +316,7 @@ var pf = { // Page Functions
   },
   "playlist-main": {
     "load": function() {
-      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
+      fileio.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         var data = JSON.parse(data.toString());
         data = data.map((item,index) => {
@@ -370,7 +370,7 @@ var pf = { // Page Functions
       });
     },
     "addNewPlaylist": function(useQueue) {
-      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
+      fileio.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         data = JSON.parse(data.toString());
         var songs = [];
@@ -382,7 +382,7 @@ var pf = { // Page Functions
           name: "New Playlist",
           songs: songs
         });
-        fs.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
+        fileio.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
           if ( err ) throw err;
           pf["playlist-edit"].currentPlaylistIndex = data.length - 1;
           pf["playlist-edit"].currentPlaylist = data[data.length - 1];
@@ -512,11 +512,11 @@ var pf = { // Page Functions
       }
     },
     "savePlaylist": function() {
-      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
+      fileio.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         data = JSON.parse(data.toString());
         data[pf["playlist-edit"].currentPlaylistIndex] = pf["playlist-edit"].currentPlaylist;
-        fs.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
+        fileio.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
           if ( err ) throw err;
           openPage("playlist-main");
         });
@@ -524,11 +524,11 @@ var pf = { // Page Functions
     },
     "deletePlaylist": function() {
       if ( ! confirm("Are you sure you want to permanently delete this playlist?") ) return;
-      fs.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
+      fileio.readFile(`${DATA_FOLDER}/playlists.json`,function(err,data) {
         if ( err ) throw err;
         data = JSON.parse(data.toString());
         data.splice(pf["playlist-edit"].currentPlaylistIndex,1);
-        fs.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
+        fileio.writeFile(`${DATA_FOLDER}/playlists.json`,JSON.stringify(data),function(err) {
           if ( err ) throw err;
           openPage("playlist-main");
         });
@@ -547,7 +547,7 @@ var pf = { // Page Functions
       pf["photos-main"].renderLinks();
     },
     "renderLinks": function() {
-      fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}`,function(err,list) {
+      fileio.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}`,function(err,list) {
         if ( err ) throw err;
         list = list.filter(item => ! item.startsWith("."));
         document.getElementById("photos-main-path").innerText = `Album: ${pf["photos-main"].path}`;
@@ -561,11 +561,11 @@ var pf = { // Page Functions
           a["data-index"] = i;
           a.onclick = function() {
             var index = parseInt(this["data-index"]);
-            fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}`,function(err,sublist) {
+            fileio.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}`,function(err,sublist) {
               if ( err ) throw err;
               sublist = sublist.filter(item => ! item.startsWith("."));
               if ( sublist.length > 0 ) {
-                fs.stat(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}/${sublist[0]}`,function(err,stats) {
+                fileio.stat(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}/${sublist[0]}`,function(err,stats) {
                   if ( err ) throw err;
                   if ( stats.isDirectory() ) {
                     pf["photos-main"].path += list[index] + "/";
@@ -593,7 +593,7 @@ var pf = { // Page Functions
     "files": null,
     "index": 0,
     "load": function() {
-      fs.readdir(`${DATA_FOLDER}/photos/${pf["photos-view"].path}`,function(err,list) {
+      fileio.readdir(`${DATA_FOLDER}/photos/${pf["photos-view"].path}`,function(err,list) {
         if ( err ) throw err;
         pf["photos-view"].index = 0;
         document.getElementById("photos-view-backward").disabled = "disabled";
