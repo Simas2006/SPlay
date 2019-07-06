@@ -242,6 +242,7 @@ var pf = { // Page Functions
       }
       fileio.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
         if ( err ) throw err;
+        list = list.filter(item => ! item.startsWith("."));
         if ( list.length > 0 ) {
           fileio.stat(`${DATA_FOLDER}/music/${pf.mlibrary.path}/${list[0]}`,function(err,stats) {
             var isDir = stats.isDirectory();
