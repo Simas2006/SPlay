@@ -1,0 +1,195 @@
+body {
+  font-family: "DIN Alternate";
+  text-align: center;
+  font-size: 135%;
+}
+body *:not(hr):not(table) {
+  margin: 0;
+}
+h1 {
+  font-size: 200%;
+}
+button {
+  display: inline;
+  font-size: 100%;
+  font-family: "DIN Alternate";
+  padding: 10px;
+  background-color: white;
+}
+a {
+  display: block;
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  font-size: 100%;
+}
+audio {
+  display: none;
+}
+#page-home {
+  text-align: center;
+}
+#home-buttonPanel {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+#home-buttonPanel td button {
+  width: 5ch;
+  height: 5ch;
+  padding: 0;
+}
+#mlibrary-button1,#mlibrary-button2 {
+  display: none;
+}
+#mlibrary-path,#photos-main-path {
+  padding-bottom: 0.7em;
+}
+#page-ytselect,#page-web,#page-ytplayer {
+  flex-flow: column;
+  height: 100vh;
+}
+#page-ytselect td {
+  width: 50%;
+}
+#page-ytselect table,#page-ytselect button {
+  width: 100%;
+}
+#ytselect-queueButton {
+  color: gray;
+}
+#home-nowPlaying,#home-queue {
+  justify-content: center;
+  align-items: center;
+}
+#page-playlist-main button {
+  width: 100%;
+  margin-bottom: 2px;
+}
+#playlist-main-table,#page-playlist-main table,#page-playlist-main tr {
+  width: 100%;
+}
+#playlist-main-buttons td {
+  width: 33%;
+}
+#playlist-main-table td.titleCol {
+  width: 55%;
+}
+#playlist-main-table,#playlist-main-table tr td {
+  border-collapse: collapse;
+}
+#playlist-main-table td {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 7.5px;
+}
+#playlist-edit-header {
+  display: flex;
+}
+#playlist-edit-title {
+  flex: 2;
+  font-family: "DIN Alternate";
+  font-size: 125%;
+}
+#playlist-edit-back {
+  margin-right: 6px;
+}
+#playlist-edit-empty {
+  display: none;
+}
+#page-photos-view button:disabled {
+  color: gray;
+}
+#photos-view-img-container {
+  display: flex;
+  width: 100%;
+}
+#photos-view-img {
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+#web-url {
+  font-size: 100%;
+  font-family: "DIN Alternate";
+}
+#page-settings {
+  text-align: center;
+}
+#page-settings * {
+  margin-top: 5px;
+}
+#page-ytplayer {
+  display: flex !important;
+  width: 100vw;
+  height: 0;
+}
+#ytplayer-back {
+  display: none;
+}
+webview.fullSize {
+  flex-grow: 1;
+}
+.page {
+  display: none;
+  text-align: left;
+}
+.queueElement {
+  display: table;
+  background-color: #a8a8a8;
+  border: 1px solid black;
+  margin: 0 auto;
+}
+.queueElement button,.playlistElement button {
+  display: block;
+  font-size: 75%;
+  padding: 2.5px;
+  width: 4ch;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+.queueElement td.typeData {
+  font-size: 275%;
+  width: 5vw;
+  border-radius: 15%;
+  background-color: white;
+  border: 1px solid gray;
+}
+.queueElement td.songData {
+  width: 35vw;
+  text-align: left;
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+}
+.queueElement p.songTitleText {
+  font-size: 125%;
+}
+.queueElement p:not(.songTitleText) {
+  font-size: 75%;
+}
+.queueElement button.hidden {
+  background-color: #a8a8a8;
+  color: #a8a8a8;
+  border: 2px solid #a8a8a8;
+}
+.playlistElement .typeData {
+  font-size: 150%;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 15%;
+  border: 1px solid gray;
+  text-align: center;
+}
+.playlistElement .songData {
+  padding-left: 10px;
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+.playlistElement:first-child .songData {
+  border-top: 1px solid black;
+}
+.playlistElement > .songData > p:not(.songTitleText) {
+  font-size: 75%;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SPlay</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="script.js"></script>
+</head>
+<body>
+  <h1>SPlay</h1>
+  <hr />
+  <div id="page-home" class="page">
+    <button onclick="openPage('mlibrary')">Music Library</button>
+    <button onclick="openPage('ytselect')">YouTube</button>
+    <button onclick="openPage('playlist-main')">Playlists</button>
+    <br />
+    <br />
+    <button onclick="openPage('photos-main')">Photos</button>
+    <button onclick="openPage('web')">Web Browser</button>
+    <button onclick="openPage('settings')">Settings</button>
+    <br />
+    <hr />
+    <table id="home-buttonPanel">
+      <tr>
+        <td><button onclick="aa.rewindSong()">&#x23ea;</button></td>
+        <td><button id="home-pauseButton" onclick="aa.togglePlay()">&#x25b6;</button></td>
+        <td><button onclick="aa.playNextSong()">&#x23e9;</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="aa.changeVolume(-5)">V-</button></td>
+        <td><button id="home-volumeButton" onclick="aa.changeVolume(0)">50%</button></td>
+        <td><button onclick="aa.changeVolume(5)">V+</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="aa.shuffleQueue()">&#x1f500;</button></td>
+        <td><button id="home-videoButton" onclick="openPage('ytplayer')">MV</button></td>
+        <td><button onclick="aa.clearQueue()">X</button></td>
+      </tr>
+    </table>
+    <br />
+    <p>Now Playing:</p>
+    <div id="home-nowPlaying"></div>
+    <br />
+    <p>Queue:</p>
+    <div id="home-queue"></div>
+  </div>
+  <div id="page-mlibrary" class="page">
+    <p id="mlibrary-path">Album: /</p>
+    <div id="mlibrary-items"></div>
+    <br />
+    <button onclick="pf.mlibrary.back()">Back</button>
+    <button id="mlibrary-button1" onclick="pf.mlibrary.toggleSelect()">Select All</button>
+    <button id="mlibrary-button2" onclick="pf.mlibrary.addToQueue()">Add to Queue</button>
+  </div>
+  <div id="page-ytselect" class="page">
+    <table><tr>
+      <td><button onclick="pf.ytselect.exitPage()">Back</button></td>
+      <td><button id="ytselect-queueButton" onclick="pf.ytselect.addToQueue()" disabled="disabled">Add to Queue</button></td>
+    </tr></table>
+  </div>
+  <div id="page-playlist-main" class="page">
+    <table><tr id="playlist-main-buttons">
+      <td><button onclick="openPage('home')">Back</button></td>
+      <td><button onclick="pf['playlist-main'].addNewPlaylist(false)">Add New Playlist</button></td>
+      <td><button onclick="pf['playlist-main'].addNewPlaylist(true)">Make Playlist From Queue</button></td>
+    </tr></table>
+    <table id="playlist-main-table"></table>
+  </div>
+  <div id="page-playlist-edit" class="page">
+    <div id="playlist-edit-header">
+      <button id="playlist-edit-back" onclick="pf['playlist-edit'].savePlaylist()">Back</button>
+      <input id="playlist-edit-title"></input>
+    </div>
+    <br />
+    <table id="playlist-edit-table"></table>
+    <p id="playlist-edit-empty">This playlist is empty. Add songs to it!</p>
+    <br />
+    <div>
+      <button onclick="pf['playlist-edit'].addNewSong('library')">Add Library Song</button>
+      <button onclick="pf['playlist-edit'].addNewSong('youtube')">Add YouTube Video</button>
+      <button onclick="pf['playlist-edit'].deletePlaylist()" class="delete">Delete Playlist</button>
+    </div>
+  </div>
+  <div id="page-photos-main" class="page">
+    <p id="photos-main-path"></p>
+    <div id="photos-main-items"></div>
+    <br />
+    <button onclick="pf['photos-main'].back()">Back</button>
+  </div>
+  <div id="page-photos-view" class="page">
+    <table><tr>
+      <td id="photos-view-controls">
+        <button onclick="pf['photos-view'].exitPage()">Back</button>
+        <button onclick="pf['photos-view'].movePicture(-1)" id="photos-view-backward" class="bold">←</button>
+        <button onclick="pf['photos-view'].movePicture(1)" id="photos-view-forward" class="bold">→</button>
+      </td>
+      <td>
+        <h3 id="photos-view-name"></h3>
+        <p id="photos-view-path"></p>
+      </td>
+    </tr></table>
+    <div id="photos-view-img-container">
+      <img id="photos-view-img" />
+    </div>
+  </div>
+  <div id="page-web" class="page">
+    <button onclick="pf.web.exitPage()">Back</button>
+    <input id="web-url" onclick="this.setSelectionRange(0,this.value.length)" placeholder="URL..." />
+  </div>
+  <div id="page-settings" class="page">
+    <h2>Settings</h2>
+    <br />
+    <p>Placeholder for networking settings</p>
+    <br />
+    <button onclick="pf.settings.openFolder()">Open Media Folder</button>
+    <button onclick="openPage('home')">Back</button>
+  </div>
+  <div id="page-ytplayer" class="page">
+    <button id="ytplayer-back" onclick="openPage('home')">Back</button>
+  </div>
+  <audio id="audio"></audio>
+</body>
+</html>
