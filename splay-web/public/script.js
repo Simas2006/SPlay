@@ -1,8 +1,3 @@
-var fileio = require("fs");
-var ExifImage = require("exif").ExifImage;
-var {shell} = require("electron");
-var DATA_FOLDER = __dirname + "/../data";
-
 var currentPage = "home";
 var queue = [];
 var pf = { // Page Functions
@@ -27,8 +22,6 @@ var pf = { // Page Functions
         var arr = pf.home.convertData(null,"No Songs in Queue");
         queueDiv.appendChild(pf.home.generateQueueElement(arr[0],arr[1],arr[2],false));
       }
-      if ( aa.songType == "youtube" ) document.getElementById("home-videoButton").disabled = "";
-      else document.getElementById("home-videoButton").disabled = "disabled";
     },
     "generateQueueElement": function(type,title,subtitle,showButtons,queueID) {
       var table = document.createElement("table");
@@ -257,32 +250,7 @@ var pf = { // Page Functions
   "ytselect": {
     "webObj": null,
     "interval": null,
-    "load": function() {
-      pf.ytselect.webObj = document.createElement("webview");
-      pf.ytselect.webObj.preload = "../injections/yt-select-injection.js";
-      pf.ytselect.webObj.src = "https://www.youtube.com";
-      pf.ytselect.webObj.className = "fullSize";
-      document.getElementById("page-ytselect").appendChild(pf.ytselect.webObj);
-      var currentState = false;
-      document.getElementById("ytselect-queueButton").innerText = `Add to ${! pf.ytselect.playlistMode ? "Queue" : "Playlist"}`;
-      document.getElementById("ytselect-queueButton").disabled = "disabled";
-      document.getElementById("ytselect-queueButton").style.color = "gray";
-      pf.ytselect.interval = setInterval(function() {
-        if ( pf.ytselect.webObj.getURL().startsWith("https://www.youtube.com/watch?v=") ) {
-          if ( ! currentState ) {
-            document.getElementById("ytselect-queueButton").disabled = "";
-            document.getElementById("ytselect-queueButton").style.color = "black";
-            currentState = true;
-          }
-        } else {
-          if ( currentState ) {
-            document.getElementById("ytselect-queueButton").disabled = "disabled";
-            document.getElementById("ytselect-queueButton").style.color = "gray";
-            currentState = false;
-          }
-        }
-      },250);
-    },
+    "load": Function.prototype,
     "addToQueue": function() {
       var string = pf.ytselect.webObj.getURL().split("https://www.youtube.com/watch?v=").join("");
       string = string.slice(0,11);
@@ -672,35 +640,7 @@ var pf = { // Page Functions
   },
   "web": {
     "interval": null,
-    "load": function() {
-      var webview = document.createElement("webview");
-      webview.id = "web-browser";
-      webview.className = "fullSize";
-      webview.src = "https://www.google.com";
-      document.getElementById("page-web").appendChild(webview);
-      var urlBox = document.getElementById("web-url");
-      urlBox.onkeydown = function(event) {
-        if ( event.key == "Enter" ) {
-          if ( this.value.split(".").length > 1 && this.value.split(".").slice(0,-1).filter(item => item.indexOf(" ") > -1).length <= 0 ) {
-            if ( ! this.value.startsWith("http://") && ! this.value.startsWith("https://") ) this.value = "http://" + this.value;
-          } else {
-            this.value = `https://www.google.com/search?q=${this.value}`;
-          }
-          webview.src = this.value;
-          this.blur();
-        }
-      }
-      var isFocused = false;
-      urlBox.onfocus = function() {
-        isFocused = true;
-      }
-      urlBox.onblur = function() {
-        isFocused = false;
-      }
-      pf.web.interval = setInterval(function() {
-        if ( urlBox.value != webview.src && ! isFocused ) urlBox.value = webview.src;
-      },500);
-    },
+    "load": Function.prototype,
     "exitPage": function() {
       clearInterval(pf.web.interval);
       document.getElementById("page-web").removeChild(document.getElementById("web-browser"));
@@ -711,11 +651,6 @@ var pf = { // Page Functions
     "load": Function.prototype,
     "openFolder": function() {
       shell.openItem(DATA_FOLDER);
-    }
-  },
-  "ytplayer": {
-    "load": function() {
-      document.getElementById("ytplayer-back").style.display = "inline";
     }
   }
 }
@@ -820,14 +755,8 @@ class AudioAgent {
 }
 
 function openPage(page) {
-  if ( page == "ytplayer" ) document.getElementById("page-ytplayer").style.height = "100vh";
-  if ( currentPage == "ytplayer" ) {
-    document.getElementById("page-ytplayer").style.height = "0px";
-    document.getElementById("ytplayer-back").style.display = "none";
-  } else {
-    document.getElementById(`page-${currentPage}`).style.display = "none";
-  }
-  document.getElementById(`page-${page}`).style.display = ["ytselect","web","ytplayer"].indexOf(page) <= -1 ? "block" : "flex";
+  document.getElementById(`page-${currentPage}`).style.display = "none";
+  document.getElementById(`page-${page}`).style.display = "block";
   currentPage = page;
   pf[page].load();
 }

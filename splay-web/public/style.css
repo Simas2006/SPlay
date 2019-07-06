@@ -47,19 +47,6 @@ audio {
 #mlibrary-path,#photos-main-path {
   padding-bottom: 0.7em;
 }
-#page-ytselect,#page-web,#page-ytplayer {
-  flex-flow: column;
-  height: 100vh;
-}
-#page-ytselect td {
-  width: 50%;
-}
-#page-ytselect table,#page-ytselect button {
-  width: 100%;
-}
-#ytselect-queueButton {
-  color: gray;
-}
 #home-nowPlaying,#home-queue {
   justify-content: center;
   align-items: center;
@@ -111,26 +98,8 @@ audio {
   margin-left: auto;
   margin-right: auto;
 }
-#web-url {
-  font-size: 100%;
-  font-family: "DIN Alternate";
-}
-#page-settings {
+#page-ytselect,#page-web,#page-settings {
   text-align: center;
-}
-#page-settings * {
-  margin-top: 5px;
-}
-#page-ytplayer {
-  display: flex !important;
-  width: 100vw;
-  height: 0;
-}
-#ytplayer-back {
-  display: none;
-}
-webview.fullSize {
-  flex-grow: 1;
 }
 .page {
   display: none;

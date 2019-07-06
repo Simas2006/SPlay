@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>SPlay</title>
   <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="fileio.js"></script>
   <script src="script.js"></script>
 </head>
 <body>
@@ -33,7 +34,7 @@
       </tr>
       <tr>
         <td><button onclick="aa.shuffleQueue()">&#x1f500;</button></td>
-        <td><button id="home-videoButton" onclick="openPage('ytplayer')">MV</button></td>
+        <td><button disabled>MV</button></td>
         <td><button onclick="aa.clearQueue()">X</button></td>
       </tr>
     </table>
@@ -53,10 +54,9 @@
     <button id="mlibrary-button2" onclick="pf.mlibrary.addToQueue()">Add to Queue</button>
   </div>
   <div id="page-ytselect" class="page">
-    <table><tr>
-      <td><button onclick="pf.ytselect.exitPage()">Back</button></td>
-      <td><button id="ytselect-queueButton" onclick="pf.ytselect.addToQueue()" disabled="disabled">Add to Queue</button></td>
-    </tr></table>
+    <p>YouTube cannot be accessed from the web portal.</p>
+    <br />
+    <button onclick="openPage('home')">Back</button>
   </div>
   <div id="page-playlist-main" class="page">
     <table><tr id="playlist-main-buttons">
@@ -104,19 +104,14 @@
     </div>
   </div>
   <div id="page-web" class="page">
-    <button onclick="pf.web.exitPage()">Back</button>
-    <input id="web-url" onclick="this.setSelectionRange(0,this.value.length)" placeholder="URL..." />
-  </div>
-  <div id="page-settings" class="page">
-    <h2>Settings</h2>
+    <p>The web browser cannot be accessed from the web portal.</p>
     <br />
-    <p>Placeholder for networking settings</p>
-    <br />
-    <button onclick="pf.settings.openFolder()">Open Media Folder</button>
     <button onclick="openPage('home')">Back</button>
   </div>
-  <div id="page-ytplayer" class="page">
-    <button id="ytplayer-back" onclick="openPage('home')">Back</button>
+  <div id="page-settings" class="page">
+    <p>Settings cannot be changed from the web portal.</p>
+    <br />
+    <button onclick="openPage('home')">Back</button>
   </div>
   <audio id="audio"></audio>
 </body>
