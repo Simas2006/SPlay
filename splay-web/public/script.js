@@ -163,9 +163,8 @@ var pf = { // Page Functions
       pf.mlibrary.renderLinks();
     },
     "addToQueue": function() {
-      fileio.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
-        if ( err ) throw err;
-        list = list.filter((item,index) => pf.mlibrary.selected[index])
+      fileio.sendMessage("list_music",pf.mlibrary.path,function(data) {
+        var list = data.files.filter((item,index) => pf.mlibrary.selected[index])
           .map(item => {return {
             "type": "library",
             "path": `${pf.mlibrary.path}${item}`
@@ -233,55 +232,13 @@ var pf = { // Page Functions
           document.getElementById("mlibrary-button2").disabled = "";
         }
       }
-      fileio.readdir(`${DATA_FOLDER}/music/${pf.mlibrary.path}`,function(err,list) {
-        if ( err ) throw err;
-        list = list.filter(item => ! item.startsWith("."));
-        if ( list.length > 0 ) {
-          fileio.stat(`${DATA_FOLDER}/music/${pf.mlibrary.path}/${list[0]}`,function(err,stats) {
-            var isDir = stats.isDirectory();
-            merge(list,isDir);
-          });
-        } else {
-          merge(list,false);
-        }
+      fileio.sendMessage("list_music",pf.mlibrary.path,function(data) {
+        merge(data.files,data.hasDirectories);
       });
     }
   },
   "ytselect": {
-    "webObj": null,
-    "interval": null,
-    "load": Function.prototype,
-    "addToQueue": function() {
-      var string = pf.ytselect.webObj.getURL().split("https://www.youtube.com/watch?v=").join("");
-      string = string.slice(0,11);
-      pf.ytselect.webObj.addEventListener("ipc-message",event => {
-        if ( event.channel == "video-data" ) {
-          var data = {
-            "type": "youtube",
-            "path": string,
-            "ytMetadata": event.args[0]
-          }
-          clearInterval(pf.ytselect.interval);
-          document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
-          if ( pf.ytselect.playlistMode ) {
-            pf.ytselect.playlistReturn(data);
-            return;
-          }
-          queue.push(data);
-          openPage("home");
-          if ( ! aa.currentSong ) aa.playNextSong();
-          else pf.home.renderQueue();
-          window.scrollTo(0,0);
-        }
-      });
-      pf.ytselect.webObj.send("video-data-req");
-    },
-    "exitPage": function() {
-      clearInterval(pf.ytselect.interval);
-      document.getElementById("page-ytselect").removeChild(pf.ytselect.webObj);
-      if ( ! pf.ytselect.playlistMode ) openPage("home");
-      else pf.ytselect.playlistReturn(null);
-    }
+    "load": Function.prototype
   },
   "playlist-main": {
     "load": function() {
@@ -639,19 +596,10 @@ var pf = { // Page Functions
     }
   },
   "web": {
-    "interval": null,
-    "load": Function.prototype,
-    "exitPage": function() {
-      clearInterval(pf.web.interval);
-      document.getElementById("page-web").removeChild(document.getElementById("web-browser"));
-      openPage("home");
-    }
+    "load": Function.prototype
   },
   "settings": {
-    "load": Function.prototype,
-    "openFolder": function() {
-      shell.openItem(DATA_FOLDER);
-    }
+    "load": Function.prototype
   }
 }
 
