@@ -619,10 +619,9 @@ class AudioAgent {
     this.currentSong = null;
   }
   playNextSong() {
-    if ( this.songType == "library" ) this.audio.pause();
-    else if ( this.songType == "youtube" ) ytPlayer.parentElement.removeChild(ytPlayer);
+    this.audio.pause();
     if ( queue.length <= 0 ) {
-      this.audio.src = "about:blank";
+      this.audio.src = "";
       this.songType = null;
       this.currentSong = null;
       this.playing = false;
@@ -631,21 +630,10 @@ class AudioAgent {
     } else {
       this.songType = queue[0].type;
       this.currentSong = queue[0];
-      if ( queue[0].type == "library" ) {
-        this.audio.src = encodeURIComponent(`${DATA_FOLDER}/music/${queue[0].path}`).split("%2F").join("/");
+      fileio.sendMessage("get_music_file",queue[0].path,id => {
+        this.audio.src = `/large_data_request?id=${id}`;
         this.audio.volume = this.volume / 100;
-      } else if ( queue[0].type == "youtube" ) {
-        ytPlayer = document.createElement("webview");
-        ytPlayer.preload = "../injections/yt-watch-injection.js";
-        ytPlayer.src = `https://www.youtube.com/watch?v=${queue[0].path}`;
-        ytPlayer.className = "fullSize";
-        ytPlayer.addEventListener("ipc-message",event => {
-          if ( event.channel == "video-ready" ) ytPlayer.send("video-command","setvol",this.volume);
-          else if ( event.channel == "video-end" ) this.playNextSong();
-        });
-        document.getElementById("page-ytplayer").appendChild(ytPlayer);
-        this.togglePlay(true);
-      }
+      });
       queue = queue.slice(1);
     }
     pf.home.renderQueue();
@@ -655,18 +643,15 @@ class AudioAgent {
     if ( setPlaying && this.playing ) return;
     this.playing = ! this.playing;
     if ( this.playing ) {
-      if ( this.songType == "library" ) this.audio.play();
-      else if ( this.songType == "youtube" ) ytPlayer.send("video-command","play");
+      this.audio.play();
       document.getElementById("home-pauseButton").innerText = "||";
     } else {
-      if ( this.songType == "library" ) this.audio.pause();
-      else if ( this.songType == "youtube" ) ytPlayer.send("video-command","pause");
+      this.audio.pause();
       document.getElementById("home-pauseButton").innerText = "▶";
     }
   }
   rewindSong() {
-    if ( this.songType == "library" ) this.audio.currentTime = 0;
-    else if ( this.songType == "youtube" ) ytPlayer.send("video-command","rewind");
+    this.audio.currentTime = 0;
     this.togglePlay(true);
   }
   changeVolume(amount) {
@@ -683,8 +668,7 @@ class AudioAgent {
         this.previousVolume = null;
       }
     }
-    if ( this.songType == "library" ) this.audio.volume = this.volume / 100;
-    else if ( this.songType == "youtube" ) ytPlayer.send("video-command","setvol",this.volume);
+    this.audio.volume = this.volume / 100;
     document.getElementById("home-volumeButton").innerText = `${this.volume}%`;
   }
   shuffleQueue() {
