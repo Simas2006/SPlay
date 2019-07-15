@@ -8,6 +8,7 @@ var fileio = {
     req.onload = function() {
       callback(JSON.parse(this.responseText));
     }
+    console.log(encodeURIComponent(param))
     req.open("GET",`/data_request?type=${type}&param=${encodeURIComponent(param)}`);
     req.send();
   }

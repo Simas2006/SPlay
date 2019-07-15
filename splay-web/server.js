@@ -33,6 +33,30 @@ app.get("/data_request",function(request,response) {
       "ip": request.ip
     };
     response.send(id.toString());
+  } else if ( request.query.type == "list_photos" ) {
+    var path = request.query.param;
+    fs.readdir(`${DATA_FOLDER}/photos/${path}`,function(err,files) {
+      if ( err ) throw err;
+      files = files.filter(item => ! item.startsWith("."));
+      fs.stat(`${DATA_FOLDER}/photos/${path}/${files[0]}`,function(err,stats) {
+        var hasDirectories = stats.isDirectory();
+        response.send(JSON.stringify({
+          "hasDirectories": hasDirectories,
+          "files": files
+        }));
+      });
+    });
+  } else if ( request.query.type == "get_photo_file" ) {
+    var id = Math.floor(Math.random() * 1e16);
+    while ( pendingRequests[id] ) {
+      id = Math.floor(Math.random() * 1e16);
+    }
+    pendingRequests[id] = {
+      "type": "photos",
+      "path": request.query.param,
+      "ip": request.ip
+    };
+    response.send(id.toString());
   }
 });
 
@@ -43,8 +67,9 @@ app.get("/large_data_request",function(request,response) {
       response.send("Error");
       return;
     }
-    var stream = fs.createReadStream(`${DATA_FOLDER}/${dataReq.type}/${dataReq.path}`);
-    response.set("Content-Type","audio/mp4");
+    var stream = fs.createReadStream(`${DATA_FOLDER}/${dataReq.type}/${decodeURIComponent(dataReq.path)}`);
+    if ( dataReq.type == "music" ) response.set("Content-Type","audio/mp4");
+    else if ( dataReq.type == "photos" ) response.set("Content-Type","image/jpeg");
     stream.pipe(response);
   }
 });

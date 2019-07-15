@@ -473,9 +473,8 @@ var pf = { // Page Functions
       pf["photos-main"].renderLinks();
     },
     "renderLinks": function() {
-      fileio.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}`,function(err,list) {
-        if ( err ) throw err;
-        list = list.filter(item => ! item.startsWith("."));
+      fileio.sendMessage("list_photos",pf["photos-main"].path,function(data) {
+        var list = data.files;
         document.getElementById("photos-main-path").innerText = `Album: ${pf["photos-main"].path}`;
         var div = document.getElementById("photos-main-items");
         while ( div.firstChild ) {
@@ -487,20 +486,13 @@ var pf = { // Page Functions
           a["data-index"] = i;
           a.onclick = function() {
             var index = parseInt(this["data-index"]);
-            fileio.readdir(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}`,function(err,sublist) {
-              if ( err ) throw err;
-              sublist = sublist.filter(item => ! item.startsWith("."));
-              if ( sublist.length > 0 ) {
-                fileio.stat(`${DATA_FOLDER}/photos/${pf["photos-main"].path}/${list[index]}/${sublist[0]}`,function(err,stats) {
-                  if ( err ) throw err;
-                  if ( stats.isDirectory() ) {
-                    pf["photos-main"].path += list[index] + "/";
-                    pf["photos-main"].renderLinks();
-                  } else {
-                    pf["photos-view"].path = pf["photos-main"].path + list[index] + "/";
-                    openPage("photos-view");
-                  }
-                });
+            fileio.sendMessage("list_photos",`${pf["photos-main"].path}/${list[index]}`,function(subdata) {
+              if ( subdata.hasDirectories ) {
+                pf["photos-main"].path += list[index] + "/";
+                pf["photos-main"].renderLinks();
+              } else {
+                pf["photos-view"].path = `${pf["photos-main"].path}/${list[index]}`.split("//").join("/");
+                openPage("photos-view");
               }
             });
           }
@@ -519,12 +511,11 @@ var pf = { // Page Functions
     "files": null,
     "index": 0,
     "load": function() {
-      fileio.readdir(`${DATA_FOLDER}/photos/${pf["photos-view"].path}`,function(err,list) {
-        if ( err ) throw err;
+      fileio.sendMessage("list_photos",pf["photos-view"].path,function(data) {
         pf["photos-view"].index = 0;
         document.getElementById("photos-view-backward").disabled = "disabled";
         document.getElementById("photos-view-forward").disabled = "";
-        pf["photos-view"].files = list.filter(item => ! item.startsWith(".") && ["jpg","png","tiff","gif"].indexOf(item.split(".").slice(-1)[0].toLowerCase()) > -1);
+        pf["photos-view"].files = data.files.filter(item => ["jpg","png","tiff","gif"].indexOf(item.split(".").slice(-1)[0].toLowerCase()) > -1);
         document.getElementById("photos-view-path").innerText = `Album: ${pf["photos-view"].path}`;
         pf["photos-view"].path = encodeURIComponent(pf["photos-view"].path).split("%2F").join("/");
         document.body.style.margin = 0;
@@ -533,55 +524,58 @@ var pf = { // Page Functions
       });
     },
     "showImage": function() {
-      document.getElementById("photos-view-name").innerText = pf["photos-view"].files[pf["photos-view"].index];
-      var imgElement = document.getElementById("photos-view-img");
-      var path = `${DATA_FOLDER}/photos/${pf["photos-view"].path}/${encodeURIComponent(pf["photos-view"].files[pf["photos-view"].index])}`;
-      var img = new Image();
-      img.src = path;
-      img.onload = function() {
-        new ExifImage({image: decodeURIComponent(path)},function(err,data) {
-          var orientation;
-          if ( err ) orientation = 1;
-          else orientation = data.image.Orientation || 1;
-          var container = document.getElementById("photos-view-img-container");
-          var fullHeight = window.innerHeight - (document.body.clientHeight - container.clientHeight);
-          container.style.height = fullHeight + "px";
-          var r,width,height;
-          if ( [6,8].indexOf(orientation) <= -1 ) [width,height] = [img.width,img.height];
-          else [width,height] = [img.height,img.width];
-          if ( width > window.innerWidth || height > fullHeight ) {
-            for ( r = 1; r > 0; r -= 0.001 ) {
-              if ( r * width < window.innerWidth && r * height < fullHeight ) break;
-            }
-          } else {
-            for ( r = 1; ; r += 0.001 ) {
-              if ( r * width > window.innerWidth || r * height > fullHeight ) {
-                r -= 0.001;
-                break;
+      fileio.sendMessage("get_photo_file",`${pf["photos-view"].path}/${pf["photos-view"].files[pf["photos-view"].index]}`,function(id) {
+        document.getElementById("photos-view-name").innerText = pf["photos-view"].files[pf["photos-view"].index];
+        var path = `/large_data_request?id=${id}`;
+        var img = new Image();
+        img.src = path;
+        console.log(img);
+        img.onload = function() {
+          EXIF.getData(img,function() {
+            var orientation = EXIF.getTag(this,"Orientation") || 1;
+            var container = document.getElementById("photos-view-img-container");
+            var fullHeight = window.innerHeight - (document.body.clientHeight - container.clientHeight);
+            container.style.height = fullHeight + "px";
+            var r,width,height;
+            if ( [6,8].indexOf(orientation) <= -1 ) [width,height] = [img.width,img.height];
+            else [width,height] = [img.height,img.width];
+            if ( width > window.innerWidth || height > fullHeight ) {
+              for ( r = 1; r > 0; r -= 0.001 ) {
+                if ( r * width < window.innerWidth && r * height < fullHeight ) break;
+              }
+            } else {
+              for ( r = 1; ; r += 0.001 ) {
+                if ( r * width > window.innerWidth || r * height > fullHeight ) {
+                  r -= 0.001;
+                  break;
+                }
               }
             }
-          }
-          var styleEntries = [
-            ["","center","center"],
-            ["","center","center"],
-            ["rotate(180deg)","center","center"],
-            ["","center","center"],
-            ["","center","center"],
-            ["translateY(-100%) translateX(12.5%) rotate(90deg)","bottom left",""],
-            ["","center","center"],
-            ["translateX(-87.5%) rotate(270deg)","top right",""]
-          ];
-          imgElement.src = path;
-          imgElement.style.width = (r * img.width) + "px";
-          imgElement.style.height = (r * img.height) + "px";
-          imgElement.style.transform = styleEntries[orientation - 1][0];
-          imgElement.style.transformOrigin = styleEntries[orientation - 1][1];
-          container.style.alignItems = styleEntries[orientation - 1][2];
-          imgElement.style.display = "block";
-          document.getElementById("photos-view-backward").disabled = pf["photos-view"].index <= 0 ? "disabled" : "";
-          document.getElementById("photos-view-forward").disabled = (pf["photos-view"].index + 1 >= pf["photos-view"].files.length) ? "disabled" : "";
-        });
-      }
+            var styleEntries = [
+              ["","center","center"],
+              ["","center","center"],
+              ["rotate(180deg)","center","center"],
+              ["","center","center"],
+              ["","center","center"],
+              ["translateY(-100%) translateX(12.5%) rotate(90deg)","bottom left",""],
+              ["","center","center"],
+              ["translateX(-87.5%) rotate(270deg)","top right",""]
+            ];
+            var oldImgElement = document.getElementById("photos-view-img");
+            container.removeChild(oldImgElement);
+            img.id = "photos-view-img";
+            img.style.width = (r * img.width) + "px";
+            img.style.height = (r * img.height) + "px";
+            img.style.transform = styleEntries[orientation - 1][0];
+            img.style.transformOrigin = styleEntries[orientation - 1][1];
+            container.style.alignItems = styleEntries[orientation - 1][2];
+            img.style.display = "block";
+            container.appendChild(img);
+            document.getElementById("photos-view-backward").disabled = pf["photos-view"].index <= 0 ? "disabled" : "";
+            document.getElementById("photos-view-forward").disabled = (pf["photos-view"].index + 1 >= pf["photos-view"].files.length) ? "disabled" : "";
+          });
+        }
+      });
     },
     "movePicture": function(add) {
       if ( pf["photos-view"].index + add < 0 || pf["photos-view"].index + add >= pf["photos-view"].files.length ) return;
